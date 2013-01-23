@@ -1,0 +1,18 @@
+<tasklist>
+  <title>Liste de tâches pour nos tests</title>
+  <task>
+    <desc>Réaliser le parseur XML</desc>
+    <priority>1</priority>
+  </task>
+  <tasklist>  
+    <title> Implémentation des concepts </title>
+    <task>
+      <desc>Implémenter le concept "Task"</desc>
+      <priority>1</priority>
+    </task> 
+    <task>
+      <desc>Implémenter le concept "TaskList"</desc>
+      <priority>2</priority>
+    </task> 
+  </tasklist>
+</tasklist>
