@@ -1,0 +1,12 @@
+DEPENDPATH += $$PWD
+
+TEMPLATE = lib
+
+HEADERS += \
+
+
+SOURCES += \
+
+
+FORMS += \
+
