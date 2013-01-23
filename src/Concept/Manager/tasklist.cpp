@@ -8,9 +8,15 @@
 
 #include "tasklist.h"
 #include <algorithm>
+#include <iostream>
 
 
-TaskList::TaskList()
+TaskList::TaskList(std::string description)
+{
+    this->description_ = description;
+}
+
+TaskList::~TaskList()
 {
 }
 
@@ -55,16 +61,23 @@ void TaskList::setDescription(std::string desc)
 
 void TaskList::add(TaskComponent * component)
 {
-    this->tasks.push_back(component);
+    this->tasks_.push_back(component);
 }
 
 void TaskList::remove(TaskComponent * component)
 {
-    std::list<TaskComponent *>::iterator itr = find(this->tasks.begin(),
-                                                    this->tasks.end(),
+    std::list<TaskComponent *>::iterator itr = find(this->tasks_.begin(),
+                                                    this->tasks_.end(),
                                                     component);
-    if( itr != this->tasks.end())
+    if( itr != this->tasks_.end())
     {
-        this->tasks.erase(itr);
+        this->tasks_.erase(itr);
     }
+}
+
+
+void TaskList::print()
+{
+    std::cout << "[" << this->description_ << "]" << std::endl;
+    std::for_each(tasks_.begin(), tasks_.end(), std::mem_fun(&TaskComponent::print));
 }

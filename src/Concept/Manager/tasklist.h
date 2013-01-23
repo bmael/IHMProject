@@ -15,7 +15,8 @@
 class TaskList : public TaskComponent
 {
 public:
-    TaskList();
+    TaskList(std::string description);
+    virtual ~TaskList();
 
     /** GETTERS **/
     int getPriority();
@@ -32,11 +33,15 @@ public:
     void setTasks(std::list<TaskComponent*> li);
 
     /** METHODS **/
+    void print();
+
     void add(TaskComponent *component);
     void remove(TaskComponent *component);
 
+
+
 private:
-    std::list<TaskComponent*> tasks;
+    std::list<TaskComponent*> tasks_;
 };
 
 #endif // TASKLIST_H

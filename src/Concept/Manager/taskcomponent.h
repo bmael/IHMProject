@@ -27,6 +27,9 @@ public:
     virtual void setState(TaskState s) =0;
     virtual void setDescription(std::string desc) =0;
 
+    virtual void print() =0;
+
+
 protected:
     int priority_;
     time_t endDate_;
