@@ -2,11 +2,16 @@ TEMPLATE = app
 CONFIG += console
 CONFIG -= qt
 
+! include( ../../common.pri ) {
+    error( Couldn't find the common.pri file! )
+}
+
 SOURCES += main.cpp \
-    taskcomponent.cpp \
-    task.cpp
+    task.cpp \
+    tasklist.cpp
 
 HEADERS += \
     taskcomponent.h \
-    task.h
+    task.h \
+    tasklist.h
 
