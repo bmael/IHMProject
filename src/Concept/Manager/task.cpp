@@ -27,6 +27,11 @@ TaskState Task::getState()
     return this->state_;
 }
 
+std::string Task::getDescription()
+{
+    return this->description_;
+}
+
 void Task::setPriority(int p)
 {
     this->priority_ = p;
@@ -40,5 +45,10 @@ void Task::setEndDate(time_t d)
 void Task::setState(TaskState s)
 {
     this->state_ = s;
+}
+
+void Task::setDescription(std::string desc)
+{
+    this->description_ = desc;
 }
 

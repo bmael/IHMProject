@@ -21,12 +21,14 @@ public:
     int getPriority();
     time_t getEndDate();
     TaskState getState();
+    std::string getDescription();
     std::list<TaskComponent*> getTasks();
 
     /** SETTERS **/
     void setPriority(int p);
     void setEndDate(time_t d);
     void setState(TaskState s);
+    void setDescription(std::string desc);
     void setTasks(std::list<TaskComponent*> li);
 
     /** METHODS **/
