@@ -3,3 +3,4 @@
  .cmp
  *.pro.user
  .directory
+ .deps
