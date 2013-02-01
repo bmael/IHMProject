@@ -6,6 +6,8 @@ DEPENDPATH += $$PWD
 }
 
 TEMPLATE = lib
+CONFIG += staticlib
+
 
 HEADERS += pugixml_sources/pugiconfig.hpp \
            pugixml_sources/pugixml.hpp
