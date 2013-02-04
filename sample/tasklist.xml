@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <tasklist>
   <title>Liste de tâches pour nos tests</title>
   <task>
@@ -5,7 +6,7 @@
     <priority>1</priority>
   </task>
   <tasklist>  
-    <title> Implémentation des concepts </title>
+    <title>Implémentation des concepts</title>
     <task>
       <desc>Implémenter le concept "Task"</desc>
       <priority>1</priority>
@@ -14,5 +15,12 @@
       <desc>Implémenter le concept "TaskList"</desc>
       <priority>2</priority>
     </task> 
+    <tasklist>
+      <title>TaskList of taskList</title>
+      <task>
+	<desc>does it work ?</desc>
+	<priority>0</priority>
+      </task>
+    </tasklist>
   </tasklist>
 </tasklist>

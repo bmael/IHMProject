@@ -1,6 +1,9 @@
-TEMPLATE = app
+TEMPLATE = lib
+CONFIG += staticlib
 CONFIG += console
 CONFIG -= qt
+
+
 
 ! include( ../../common.pri ) {
     error( Couldn't find the common.pri file! )

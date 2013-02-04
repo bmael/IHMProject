@@ -7,6 +7,7 @@ CONFIG -= qt
 }
 
 LIBS += ../../lib/liblib.a
+LIBS += ../Manager/libManager.a
 
 SOURCES += main.cpp \
     parser.cpp
