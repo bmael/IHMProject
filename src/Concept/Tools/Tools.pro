@@ -6,6 +6,9 @@ CONFIG -= qt
     error( Couldn't find the common.pri file! )
 }
 
+LIBS += ../../lib/liblib.a
+LIBS += ../Manager/libManager.a
+
 SOURCES += main.cpp \
     parser.cpp
 

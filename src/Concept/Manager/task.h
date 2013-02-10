@@ -15,6 +15,7 @@
 class Task : public TaskComponent
 {
 public:
+    Task();
     Task(std::string desc);
     virtual ~Task();
 

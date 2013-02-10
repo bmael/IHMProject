@@ -10,15 +10,16 @@
 #include <algorithm>
 #include <iostream>
 
+TaskList::TaskList()
+{
+}
 
 TaskList::TaskList(std::string description)
 {
     this->description_ = description;
 }
 
-TaskList::~TaskList()
-{
-}
+TaskList::~TaskList(){}
 
 int TaskList::getPriority()
 {
@@ -81,3 +82,5 @@ void TaskList::print()
     std::cout << "[" << this->description_ << "]" << std::endl;
     std::for_each(tasks_.begin(), tasks_.end(), std::mem_fun(&TaskComponent::print));
 }
+
+

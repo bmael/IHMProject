@@ -15,6 +15,7 @@
 class TaskList : public TaskComponent
 {
 public:
+    TaskList();
     TaskList(std::string description);
     virtual ~TaskList();
 

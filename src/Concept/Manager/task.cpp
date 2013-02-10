@@ -9,6 +9,8 @@
 #include "task.h"
 #include <iostream>
 
+Task::Task(){}
+
 Task::Task(std::string desc)
 {
     this->description_ = desc;
@@ -62,4 +64,7 @@ void Task::print()
 {
     std::cout << "- " << this->description_ << std::endl;
 }
+
+
+
 
