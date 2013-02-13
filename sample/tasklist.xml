@@ -3,10 +3,11 @@
   <title>Liste de tâches pour nos tests</title>
   <task>
     <desc>Réaliser le parseur XML</desc>
-    <priority>1</priority>
+    <priority>2</priority>
   </task>
   <tasklist>  
     <title>Implémentation des concepts</title>
+    <priority>1</priority>
     <task>
       <desc>Implémenter le concept "Task"</desc>
       <priority>2</priority>

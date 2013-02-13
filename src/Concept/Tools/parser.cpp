@@ -49,29 +49,54 @@ TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList * list){
     {
         if(std::strcmp(child.name(), "tasklist") == 0) {
             TaskList * toAdd = new TaskList();
-            list->add(parseTaskList(child,toAdd));
+
+            toAdd = parseTaskList(child,toAdd);
+
+            if(toAdd->getPriority()!=0 ){
+
+                bool find = false;
+                unsigned int pos = 0;
+
+                while(pos < list->getTasks().size() && !find){
+                    if(toAdd->getPriority() < list->getComponent(pos)->getPriority()) find = true;
+                    else{
+                        ++pos;
+                    }
+                }
+
+                list->insert(toAdd, pos);
+            }
+            else{
+                list->add(toAdd);
+            }
 
         }
+
         if(std::strcmp(child.name(), "title") == 0) list->setDescription(child.text().as_string());
+        if(std::strcmp(child.name(), "priority") == 0) list->setPriority(child.text().as_int());
 
         if(std::strcmp(child.name(), "task") == 0) {
 
             Task * t = new Task();
             t = parseTask(child);
 
-            std::deque<TaskComponent*>::iterator it = list->getTasks().begin();
-            bool find = false;
-            unsigned int pos = 0;
+            if(t->getPriority()!=0 ){
 
-            while(pos < list->getTasks().size() && !find){
-                if(t->getPriority() < list->getComponent(pos)->getPriority()) find = true;
-                else{
-                    ++pos;
-                    ++it;
+                bool find = false;
+                unsigned int pos = 0;
+
+                while(pos < list->getTasks().size() && !find && t->getPriority()!=0 ){
+                    if(t->getPriority() < list->getComponent(pos)->getPriority()) find = true;
+                    else{
+                        ++pos;
+                    }
                 }
-            }
 
-            list->insert(t,pos);
+                list->insert(t,pos);
+            }
+            else{
+                list->add(t);
+            }
 
         }
     }
