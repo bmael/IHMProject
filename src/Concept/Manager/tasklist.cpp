@@ -92,6 +92,7 @@ void TaskList::print(int depth) const
         else {
             depth ++;
             (*itb)->print(depth);
+            depth--;
         }
         ++itb;
     }
