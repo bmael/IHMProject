@@ -22,10 +22,19 @@
  */
 TaskList * parse(const char * file_path);
 
+/**
+ * @brief Parses a tasklist recursively.
+ * @param tasklistnode the xlm node to parse
+ * @param list the tasklist where is stored the result of the parsing.
+ * @return  a TaskList resulting of the parsing.
+ */
 TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList *list);
 
+/**
+ * @brief Parses a task.
+ * @param tasknode an xml node corresponding to a task.
+ * @return the task resulting of the parsing of the xml node.
+ */
 Task * parseTask(pugi::xml_node tasknode);
-
-bool endOfBranch(pugi::xml_node branchnode);
 
 #endif // PARSER_H

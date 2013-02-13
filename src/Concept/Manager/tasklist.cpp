@@ -10,54 +10,36 @@
 #include <algorithm>
 #include <iostream>
 
+TaskList::TaskList(const TaskList &tl) : TaskComponent(tl),tasks_(tl.getTasks())
+{
+}
+
 TaskList::TaskList()
 {
+    this->priority_ = 0;
 }
 
 TaskList::TaskList(std::string description)
 {
     this->description_ = description;
+    this->priority_ = 0;
 }
 
 TaskList::~TaskList(){}
 
-int TaskList::getPriority()
+std::deque<TaskComponent*> TaskList::getTasks() const
 {
-    return this->priority_;
+    return this->tasks_;
 }
 
-time_t TaskList::getEndDate()
+TaskComponentType TaskList::getType() const
 {
-    return this->endDate_;
+    return TASKLIST;
 }
 
-TaskState TaskList::getState()
+TaskComponent *TaskList::getComponent(unsigned long pos)
 {
-    return this->state_;
-}
-
-std::string TaskList::getDescription()
-{
-    return this->description_;
-}
-
-void TaskList::setPriority(int p)
-{
-    this->priority_ = p;
-}
-
-void TaskList::setEndDate(time_t d)
-{
-    this->endDate_ = d;
-}
-
-void TaskList::setState(TaskState s){
-    this->state_ = s;
-}
-
-void TaskList::setDescription(std::string desc)
-{
-    this->description_ = desc;
+    return this->tasks_.at(pos);
 }
 
 void TaskList::add(TaskComponent * component)
@@ -65,9 +47,14 @@ void TaskList::add(TaskComponent * component)
     this->tasks_.push_back(component);
 }
 
+void TaskList::insert(TaskComponent *component, int pos)
+{
+    this->tasks_.insert(this->tasks_.begin() + pos, component);
+}
+
 void TaskList::remove(TaskComponent * component)
 {
-    std::list<TaskComponent *>::iterator itr = find(this->tasks_.begin(),
+    std::deque<TaskComponent *>::iterator itr = find(this->tasks_.begin(),
                                                     this->tasks_.end(),
                                                     component);
     if( itr != this->tasks_.end())
@@ -77,10 +64,28 @@ void TaskList::remove(TaskComponent * component)
 }
 
 
-void TaskList::print()
+void TaskList::print(int depth) const
 {
-    std::cout << "[" << this->description_ << "]" << std::endl;
-    std::for_each(tasks_.begin(), tasks_.end(), std::mem_fun(&TaskComponent::print));
+    std::deque<TaskComponent*>::const_iterator itb = this->tasks_.begin();
+    const std::deque<TaskComponent*>::const_iterator ite = this->tasks_.end();
+
+    int tmp = 0;
+    while(tmp != depth){
+        std::cout << "\t";
+        tmp++;
+    }
+    std::cout << "|-";
+    std::cout << " ["<< this->getPriority() << "][" << this->getDescription()<< "]" << std::endl;
+
+    while(itb != ite ){
+        if((*itb)->getType() == TASK) (*itb)->print(depth);
+        else {
+            depth ++;
+            (*itb)->print(depth);
+        }
+        ++itb;
+    }
 }
+
 
 

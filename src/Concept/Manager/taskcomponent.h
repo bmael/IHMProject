@@ -13,21 +13,23 @@
 #include <string>
 
 enum TaskState { TODO, DONE };
+enum TaskComponentType {TASK, TASKLIST};
 
 class TaskComponent
 {
 public:
-    virtual int getPriority() =0;
-    virtual time_t getEndDate() =0;
-    virtual TaskState getState() =0;
-    virtual std::string getDescription() =0;
+    int getPriority() const;
+     time_t getEndDate() const;
+     TaskState getState() const;
+     std::string getDescription() const;
+     virtual TaskComponentType getType() const =0;
 
-    virtual void setPriority(int p) =0;
-    virtual void setEndDate(time_t d) =0;
-    virtual void setState(TaskState s) =0;
-    virtual void setDescription(std::string desc) =0;
+     void setPriority(int p);
+     void setEndDate(time_t d);
+     void setState(TaskState s);
+     void setDescription(std::string desc);
 
-    virtual void print() =0;
+    virtual void print(int depth = 0) const =0;
 
 
 protected:

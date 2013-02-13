@@ -7,42 +7,26 @@
  * ******************************************************************************/
 
 #include "parser.h"
+#include "sorting.h"
 
 #include <iostream>
 #include <cstring>
 
 TaskList * parse(const char * file_path){
     TaskList *res = new TaskList();
+
+    std::cout << "parser : priority of mainList : " << res->getPriority() << std::endl;
+
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load_file(file_path);
 
     if(result){
-
+        // if the xml file is open correctly, initializes the main taskList for the recursion.
         pugi::xml_node mainTaskList = doc.child("tasklist");
         res->setDescription(mainTaskList.child("title").text().as_string());
         parseTaskList(mainTaskList, res);
 
-//        for(pugi::xml_node child = mainTaskList.first_child();
-//            child;
-//            child = child.next_sibling())
-//        {
-//            if(std::strcmp(child.name(), "title") == 0 ) res->setDescription((std::string)child.text().as_string());
-
-//            if(std::strcmp(child.name(), "tasklist") == 0){
-//                // call method for taskList
-//            }
-
-//            if(std::strcmp(child.name(), "task") == 0){
-//                res->add(parseTask(child));
-//            }
-
-
-//        }
-
-
-
     }
-
     return res;
 }
 
@@ -59,33 +43,6 @@ Task * parseTask(pugi::xml_node tasknode){
 
 TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList * list){
 
-//    // There are only task to add to the current tasklist
-//    if(endOfBranch(tasklistnode)){
-//        std::cout << "this is the end of a branch" << std::endl;
-//        for(pugi::xml_node child = tasklistnode.first_child();
-//            child;
-//            child = child.next_sibling())
-//        {
-//            list->add(parseTask(child));
-//        }
-//        return list;
-//    }else{
-//        for(pugi::xml_node child = tasklistnode.first_child();
-//                    child;
-//            child = child.next_sibling("task"))
-//        {
-//            list->add(parseTask(child));
-//        }
-//        for(pugi::xml_node child = tasklistnode.first_child();
-//                    child;
-//            child = child.next_sibling("tasklist"))
-//        {
-////            TaskList * tmp = new TaskList();
-//            list->setDescription(child.child("title").text().as_string());
-//            list->add(parseTaskList(child, list));
-//        }
-
-//    }
     for(pugi::xml_node child = tasklistnode.first_child();
         child;
         child = child.next_sibling())
@@ -96,13 +53,30 @@ TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList * list){
 
         }
         if(std::strcmp(child.name(), "title") == 0) list->setDescription(child.text().as_string());
-        if(std::strcmp(child.name(), "task") == 0) list->add(parseTask(child));
+
+        if(std::strcmp(child.name(), "task") == 0) {
+
+            Task * t = new Task();
+            t = parseTask(child);
+
+            std::deque<TaskComponent*>::iterator it = list->getTasks().begin();
+            bool find = false;
+            unsigned int pos = 0;
+
+            while(pos < list->getTasks().size() && !find){
+                if(t->getPriority() < list->getComponent(pos)->getPriority()) find = true;
+                else{
+                    ++pos;
+                    ++it;
+                }
+            }
+
+            list->insert(t,pos);
+
+        }
     }
+
     return list;
 
-}
-
-bool endOfBranch(pugi::xml_node branchnode){
-   return branchnode.children().end() == branchnode.children().begin();
 }
 

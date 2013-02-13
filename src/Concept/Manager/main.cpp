@@ -12,19 +12,22 @@ int main()
         Task * t2 = new Task("go to the bed");
         TaskList * dreamList = new TaskList("Dreaming");
             Task * t1bis = new Task("sleep");
+            t1bis->setPriority(40);
+            TaskList * plopList = new TaskList("plop list");
+                Task * t1bibis = new Task("t1bibis");
 
+    plopList->add(t1bibis);
     dreamList->add(t1bis);
+    dreamList->add(plopList);
     mainList->add(t1);
     mainList->add(t2);
     mainList->add(dreamList);
 
+    cout << "pouzt" << endl;
+
     mainList->print();
 
-    delete mainList;
-    delete t1;
-    delete t2;
-    delete dreamList;
-    delete t1bis;
+
 
     return 0;
 }

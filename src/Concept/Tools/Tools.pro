@@ -10,8 +10,10 @@ LIBS += ../../lib/liblib.a
 LIBS += ../Manager/libManager.a
 
 SOURCES += main.cpp \
-    parser.cpp
+    parser.cpp \
+    sorting.cpp
 
 HEADERS += \
-    parser.h
+    parser.h \
+    sorting.h
 

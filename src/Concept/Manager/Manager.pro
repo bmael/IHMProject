@@ -11,10 +11,13 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     task.cpp \
-    tasklist.cpp
+    tasklist.cpp \
+    taskcomponent.cpp
 
 HEADERS += \
     taskcomponent.h \
     task.h \
     tasklist.h
+
+
 
