@@ -42,6 +42,16 @@ TaskComponent *TaskList::getComponent(unsigned long pos)
     return this->tasks_.at(pos);
 }
 
+bool TaskList::getIsOrdered() const
+{
+    return this->isOrdered_;
+}
+
+void TaskList::setIsOrdered(bool ordered)
+{
+    this->isOrdered_ = ordered;
+}
+
 void TaskList::add(TaskComponent * component)
 {
     this->tasks_.push_back(component);

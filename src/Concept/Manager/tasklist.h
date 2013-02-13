@@ -24,6 +24,10 @@ public:
     std::deque<TaskComponent*> getTasks() const;
     TaskComponentType getType() const;
     TaskComponent* getComponent(unsigned long int pos);
+    bool getIsOrdered() const;
+
+    /** SETTERS **/
+    void setIsOrdered(bool ordered);
 
     /** METHODS **/
     void print(int depth = 0) const;
@@ -35,6 +39,7 @@ public:
 
 private:
     std::deque<TaskComponent*> tasks_;
+    bool isOrdered_;
 };
 
 #endif // TASKLIST_H
