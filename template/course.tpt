@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tasklist>
+  <title>Préparation du cours de [...]</title>
+  
+  <tasklist>
+    <title>Préparation du CM</title>
+    
+    <task>
+      <desc>Préparer les slides de cours</desc>
+    </task>
+    <task>
+      <desc>Prendre un vidéo projecteur</desc>
+    </task>
+    <task>
+      <desc>Prendre un ordinateur</desc>
+    </task>
+    
+  </tasklist>
+  
+  <tasklist>
+    <title>Préparation du TD</title>
+    
+    <task>
+      <desc>Rédiger l'énoncé</desc>
+      <priority>1</priority>
+    </task>
+    
+    <task>
+      <desc>Imprimer l'énoncé</desc>
+      <priority>2</priority>
+    </task>
+    
+  </tasklist>
+  
+  <tasklist>
+    <title>Préparation du TP</title>
+    
+    <task>
+      <desc>Rédiger l'énoncé</desc>
+      <priority>1</priority>
+    </task>
+    
+    <task>
+      <desc>Imprimer l'énoncé</desc>
+      <priority>2</priority>
+    </task>
+    
+    <task>
+      <desc>Déposer l'énoncé sur madoc</desc>
+      <priority>2</priority>
+    </task>
+    
+  </tasklist>
+  
+</tasklist>
