@@ -2,6 +2,11 @@
 #define LISTFORM_H
 
 #include <QWidget>
+#include <QDate>
+
+#include "../../Concept/Manager/taskcomponent.h"
+#include "../../Concept/Manager/tasklist.h"
+#include "../../Concept/Manager/task.h"
 
 namespace Ui {
 class ListForm;
@@ -19,8 +24,13 @@ public slots:
     void showAbsoluteTimeLimit();
     void showRelativeTimeLimit();
 
+    void fillSubList(QList<QString> *);
+
+    void prepareNewTaskList();
+
 signals:
     void hideThis();
+    void sendNewTaskList(QString, int, QDate);
 
 private:
     Ui::ListForm *ui;

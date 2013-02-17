@@ -7,6 +7,9 @@ TaskForm::TaskForm(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->timeLimitAbsolute->setDate(QDate::currentDate());
+    ui->timeLimitAbsolute->setMinimumDate(QDate::currentDate());
+
     ui->timeLimitRelative->hide();
     ui->timeLimitRelativeLabel->hide();
 
