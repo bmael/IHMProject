@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tasklist>
   <title>Liste de tâches pour nos tests</title>
+  <state>1</state>
   <task>
     <desc>Réaliser le parseur XML</desc>
     <priority>2</priority>
+    <date>2013-02-17</date>
+    <state>1</state>
   </task>
   <tasklist>  
     <title>Implémentation des concepts</title>

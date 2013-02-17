@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <sstream>
 
 TaskList * parse(const char * file_path){
     TaskList *res = new TaskList();
@@ -24,6 +25,9 @@ TaskList * parse(const char * file_path){
         // if the xml file is open correctly, initializes the main taskList for the recursion.
         pugi::xml_node mainTaskList = doc.child("tasklist");
         res->setDescription(mainTaskList.child("title").text().as_string());
+        res->setPriority(mainTaskList.child("priority").text().as_int());
+        res->setEndDate(mainTaskList.child("date").text().as_string());
+        res->setState((TaskState)mainTaskList.child("state").text().as_int());
         parseTaskList(mainTaskList, res);
 
     }
@@ -36,6 +40,9 @@ Task * parseTask(pugi::xml_node tasknode){
     if(std::strcmp(tasknode.name(), "task") == 0){
         t->setDescription(tasknode.child("desc").text().as_string());
         t->setPriority(tasknode.child("priority").text().as_int());
+        t->setEndDate(tasknode.child("date").text().as_string());
+        t->setState((TaskState)tasknode.child("state").text().as_int());
+
     }
 
     return t;
@@ -74,6 +81,9 @@ TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList * list){
 
         if(std::strcmp(child.name(), "title") == 0) list->setDescription(child.text().as_string());
         if(std::strcmp(child.name(), "priority") == 0) list->setPriority(child.text().as_int());
+        if(std::strcmp(child.name(), "date") == 0) list->setEndDate(child.text().as_string());
+        if(std::strcmp(child.name(), "state") == 0) list->setState((TaskState)child.text().as_int());
+
 
         if(std::strcmp(child.name(), "task") == 0) {
 
@@ -102,6 +112,89 @@ TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList * list){
     }
 
     return list;
+
+}
+
+void save(TaskList * list, const char * file_path){
+    pugi::xml_document doc;
+
+    pugi::xml_node mainTaskList = doc.append_child(pugi::node_element);
+    mainTaskList.set_name("tasklist");
+
+
+    // Initializes the main node
+    pugi::xml_node title = mainTaskList.append_child("title");
+    title.append_child(pugi::node_pcdata).set_value(list->getDescription().c_str());
+
+    pugi::xml_node priority = mainTaskList.append_child("priority");
+    unsigned int priorityvalue = list->getPriority();
+    std::stringstream priorityss;
+    priorityss << priorityvalue;
+    priority.append_child(pugi::node_pcdata).set_value(priorityss.str().c_str());
+
+    pugi::xml_node date = mainTaskList.append_child("date");
+    date.append_child(pugi::node_pcdata).set_value(list->getEndDate().c_str());
+
+    pugi::xml_node state = mainTaskList.append_child("state");
+    state.append_child(pugi::node_pcdata).set_value(list->getState() ? "1" : "0");
+
+    // Add all others lists and tasks
+    int i;
+    TaskComponent * c;
+    for(i=0; i<list->getTasks().size(); i++){
+        c = list->getComponent(i);
+        if(c->getType() == TASK) addTask((Task *)c, mainTaskList);
+        else addTaskList((TaskList *)c, mainTaskList);
+    }
+
+    doc.save_file(file_path);
+}
+
+void addTaskList(TaskList * list, pugi::xml_node node){
+
+    pugi::xml_node child = node.append_child("tasklist");
+
+    pugi::xml_node title = child.append_child("title");
+    title.append_child(pugi::node_pcdata).set_value(list->getDescription().c_str());
+
+    pugi::xml_node priority = child.append_child("priority");
+    unsigned int priorityvalue = list->getPriority();
+    std::stringstream priorityss;
+    priorityss << priorityvalue;
+    priority.append_child(pugi::node_pcdata).set_value(priorityss.str().c_str());
+
+    pugi::xml_node date = child.append_child("date");
+    date.append_child(pugi::node_pcdata).set_value(list->getEndDate().c_str());
+
+    pugi::xml_node state = child.append_child("state");
+    state.append_child(pugi::node_pcdata).set_value(list->getState() ? "1" : "0");
+
+    int i;
+    TaskComponent * c;
+    for(i=0; i<list->getTasks().size(); i++){
+        c = list->getComponent(i);
+        if(c->getType() == TASK) addTask((Task *)c, child);
+        else addTaskList((TaskList *)c, child);
+    }
+}
+
+void addTask(Task * task, pugi::xml_node node){
+    pugi::xml_node child = node.append_child("task");
+
+    pugi::xml_node title = child.append_child("desc");
+    title.append_child(pugi::node_pcdata).set_value(task->getDescription().c_str());
+
+    pugi::xml_node priority = child.append_child("priority");
+    unsigned int priorityvalue = task->getPriority();
+    std::stringstream priorityss;
+    priorityss << priorityvalue;
+    priority.append_child(pugi::node_pcdata).set_value(priorityss.str().c_str());
+
+    pugi::xml_node date = child.append_child("date");
+    date.append_child(pugi::node_pcdata).set_value(task->getEndDate().c_str());
+
+    pugi::xml_node state = child.append_child("state");
+    state.append_child(pugi::node_pcdata).set_value(task->getState() ? "1" : "0");
 
 }
 

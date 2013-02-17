@@ -5,7 +5,7 @@ int TaskComponent::getPriority() const
     return this->priority_;
 }
 
-time_t TaskComponent::getEndDate() const
+std::string TaskComponent::getEndDate() const
 {
     return this->endDate_;
 }
@@ -25,7 +25,7 @@ void TaskComponent::setPriority(int p)
     this->priority_ = p;
 }
 
-void TaskComponent::setEndDate(time_t d)
+void TaskComponent::setEndDate(std::string d)
 {
     this->endDate_ = d;
 }

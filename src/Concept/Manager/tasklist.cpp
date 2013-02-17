@@ -85,7 +85,8 @@ void TaskList::print(int depth) const
         tmp++;
     }
     std::cout << "|-";
-    std::cout << " ["<< this->getPriority() << "][" << this->getDescription()<< "]" << std::endl;
+    std::cout << " ["<< this->getPriority() << "]("<< this->endDate_ << ")[" << this->getDescription()<< "]" << " : ";
+    this->state_ ? std::cout << "DONE" << std::endl : std::cout << "TODO" << std::endl;
 
     while(itb != ite ){
         if((*itb)->getType() == TASK) (*itb)->print(depth);

@@ -37,4 +37,15 @@ TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList *list);
  */
 Task * parseTask(pugi::xml_node tasknode);
 
+/**
+ * @brief Save a taskList into the xml file given in parameter. Creates the
+ * xml file if does not exist.
+ * @param list
+ * @param file_path
+ */
+void save(TaskList * list, const char * file_path);
+
+void addTaskList(TaskList * list, pugi::xml_node node);
+void addTask(Task * task, pugi::xml_node node);
+
 #endif // PARSER_H

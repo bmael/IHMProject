@@ -19,13 +19,13 @@ class TaskComponent
 {
 public:
     int getPriority() const;
-     time_t getEndDate() const;
+     std::string getEndDate() const;
      TaskState getState() const;
      std::string getDescription() const;
      virtual TaskComponentType getType() const =0;
 
      void setPriority(int p);
-     void setEndDate(time_t d);
+     void setEndDate(std::string d);
      void setState(TaskState s);
      void setDescription(std::string desc);
 
@@ -34,7 +34,7 @@ public:
 
 protected:
     int priority_;
-    time_t endDate_;
+    std::string endDate_;
     TaskState state_;
     std::string description_;
 

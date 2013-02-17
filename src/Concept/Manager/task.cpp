@@ -37,6 +37,7 @@ void Task::print(int depth) const
          tmp++;
      }
     std::cout << "\t|-";
-    std::cout << " [" << this->priority_ << "] " << this->description_ << std::endl;
+    std::cout << " [" << this->priority_ << "] (" << this->endDate_ << ")" << this->description_ << " : ";
+    this->state_ ? std::cout << "DONE" << std::endl : std::cout << "TODO" << std::endl;
 }
 
