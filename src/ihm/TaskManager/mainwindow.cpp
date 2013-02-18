@@ -387,7 +387,7 @@ void MainWindow::aboutPopup()
 
 void MainWindow::preferenciesPopup()
 {
-    Preferencies * pref = new Preferencies(this);
+    Preferencies * pref = new Preferencies((LangType)Configuration::getInstance()->getLanguage(),this);
     connect(pref, SIGNAL(languageChanged(LangType)), this, SLOT(changeLanguage(LangType)));
     pref->exec();
 }
