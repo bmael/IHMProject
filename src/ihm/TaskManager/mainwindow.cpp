@@ -154,6 +154,66 @@ void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
 
 void MainWindow::newTask(QString taskDesc, int priority, QDate date) {
     qDebug() << "Creating new Task : " << taskDesc << " - " << priority << " - " << date;
+
+    // Creating the new Task
+    TaskComponent * t = new Task(taskDesc.toStdString());
+    t->setPriority(priority);
+    t->setEndDate(date.toString("d/MM/yyyy").toStdString());
+
+    // Creating the matching QStandardItems
+    QStandardItem * i = new QStandardItem(taskDesc);
+    QStandardItem * d = new QStandardItem();
+    i->setCheckable(true);
+    d->setData(QVariant(date), 2);
+
+    QList<QStandardItem *> * l = new QList<QStandardItem *>();
+    l->append(i);
+    l->append(d);
+
+    // Inserting the couple in the map
+    mapping_->insert(l, t);
+
+    // Updating the model and the project TaskList
+    QStandardItem * parent = selectedItem_->at(0);
+    TaskComponent * parentTask = mapping_->value(selectedItem_);
+
+    if ( parentTask->getType() == TASKLIST ) {
+        qDebug() << QString::fromStdString(parentTask->getDescription()) << "is already a TaskList";
+        ((TaskList *) parentTask)->add(t);
+    }
+    else {
+        qDebug() << QString::fromStdString(parentTask->getDescription()) << "is not yet a TaskList";
+        // Creating a new TaskList to replace the previous Task
+        std::string savedDesc = parentTask->getDescription();
+        int savedPriority = parentTask->getPriority();
+        std::string savedDate = parentTask->getEndDate();
+
+        parentTask = new TaskList(savedDesc);
+        parentTask->setPriority(savedPriority);
+        parentTask->setEndDate(savedDate);
+        ((TaskList *) parentTask)->add(t);
+
+        //qDebug() << "New list : " << QString::fromStdString(newParentTask->getDescription());
+
+        // Adding the new Task to the created TaskList
+        //((TaskList *) newParentTask)->add(t);
+
+        //parentTask = newParentTask;
+
+//        mapping_->remove(findQListFromItem(parent));
+//        mapping_->insert(findQListFromItem(parent), parentTask);
+
+        this->selectedItem_ = findQListFromItem(parent);
+
+        //delete newParentTask;
+    }
+
+    parent->appendRow(*l);
+    ui->tasksView->expand(model_->indexFromItem(parent));
+
+    //displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
+
+    currentProject_->print();
 }
 
 
@@ -228,9 +288,17 @@ void MainWindow::deleteTaskList()
         ui->tasksView->setCurrentIndex((l->at(0))->parent()->index());
         this->setSelectedItem((l->at(0))->parent()->index());
 
+        qDebug() << "New CurrentItem after deletion :";
+        qDebug() << (l->at(0))->parent()->data(0);
+        qDebug() << this->selectedItem_->at(0)->data(0);
+
         // Removing the item and the TaskList
         parentTask->remove(t);
-        ((l->at(0))->parent())->removeRow((l->at(0))->row());
+
+        int row = l->at(0)->row();
+        ((l->at(0))->parent())->removeRow(row);
+
+        mapping_->remove(l);
 
         currentProject_->print();
     }
