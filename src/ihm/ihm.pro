@@ -19,6 +19,7 @@ RESOURCES += \
 TARGET = ../../TaskManager
 
 LIBS += ../Concept/Manager/libManager.a
+LIBS += ../lib/liblib.a
 
 OBJECTS_DIR = .cmp/ojb
 MOC_DIR = .cmp/moc

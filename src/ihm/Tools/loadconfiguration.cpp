@@ -1,22 +1,48 @@
 #include "loadconfiguration.h"
 #include "configuration.h"
+#include <iostream>
+#include <sstream>
 
 void readConfig(const char * file_path){
-//    pugi::xml_document doc;
-//    pugi::xml_parse_result result = doc.load_file(file_path);
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_file(file_path);
 
-//    if(result){
-//        // if the xml file is open correctly
-//        pugi::xml_node session = doc.child("session");
+    std::cout << file_path << std::endl;
 
-//        //Last tasksList
+    if(result){
 
+        // if the xml file is open correctly
+        pugi::xml_node session = doc.child("session");
 
-//        // Preferences
-//        pugi::xml_node preferences = session.child("preferences");
-//        Configuration::getInstance()->setLanguage(preferences.child("language").text().as_int());
+        //Last tasksList
+        // NOT YET IMPLEMENTED
 
-//    }
+        // Preferences
+        pugi::xml_node preferences = session.child("preferences");
+        Configuration::getInstance()->setLanguage(preferences.child("language").text().as_int());
 
+    }
 }
+
+void saveConfig(const char *file_path){
+    pugi::xml_document doc;
+
+    pugi::xml_node session = doc.append_child(pugi::node_element);
+    session.set_name("session");
+
+    // Task list
+    //NOT YET IMPLEMENTED
+
+
+    // Preferences
+    pugi::xml_node preferences = session.append_child("preferences");
+    pugi::xml_node language = preferences.append_child("language");
+    unsigned int langvalue = Configuration::getInstance()->getLanguage();
+    std::stringstream langss;
+    langss << langvalue;
+    language.append_child(pugi::node_pcdata).set_value(langss.str().c_str());
+
+    doc.save_file(file_path);
+}
+
 

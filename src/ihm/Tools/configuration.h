@@ -3,25 +3,19 @@
 
 class Configuration{
 private:
-    Configuration(){}
-    ~Configuration(){}
+    Configuration();
+    ~Configuration();
 
 public:
-    void setLanguage(int l){_language = l;}
+    void setLanguage(int l);
+    int getLanguage();
 
-    static Configuration *getInstance(){
-        if(NULL == _instance){
-            _instance = new Configuration;
-        }
-
-        return _instance;
-    }
+    static Configuration *getInstance();
 
 private:
     int _language;
     static Configuration *_instance;
 };
 
-Configuration *Configuration::_instance = NULL;
 
 #endif //CONFIGURATION_H

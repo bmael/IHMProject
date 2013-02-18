@@ -5,4 +5,6 @@
 
 void readConfig(const char * file_path);
 
+void saveConfig(const char *file_path);
+
 #endif // LOADCONFIGURATION_H
