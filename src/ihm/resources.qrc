@@ -2,4 +2,14 @@
     <qresource prefix="/language">
         <file alias="EN">ihm_en.qm</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file alias="about">img/about.png</file>
+        <file alias="save">img/save.png</file>
+        <file alias="saveas">img/saveas.png</file>
+        <file alias="quit">img/quit.png</file>
+        <file alias="open">img/open.png</file>
+        <file alias="new">img/new.png</file>
+        <file alias="preferences">img/preferences.png</file>
+        <file alias="moustache">img/logo.png</file>
+    </qresource>
 </RCC>

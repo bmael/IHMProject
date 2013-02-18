@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Moustache</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/icons/moustache</normaloff>:/icons/moustache</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
@@ -47,8 +51,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>290</width>
-          <height>382</height>
+          <width>280</width>
+          <height>410</height>
          </rect>
         </property>
         <attribute name="label">
@@ -60,8 +64,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>98</width>
-          <height>28</height>
+          <width>280</width>
+          <height>410</height>
          </rect>
         </property>
         <attribute name="label">
@@ -73,8 +77,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>98</width>
-          <height>28</height>
+          <width>280</width>
+          <height>410</height>
          </rect>
         </property>
         <attribute name="label">
@@ -101,7 +105,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -133,6 +137,10 @@
    <addaction name="menuAide"/>
   </widget>
   <action name="actionQuitter">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/quit</normaloff>:/icons/quit</iconset>
+   </property>
    <property name="text">
     <string>Quitter</string>
    </property>
@@ -141,6 +149,10 @@
    </property>
   </action>
   <action name="actionNouveau">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/new</normaloff>:/icons/new</iconset>
+   </property>
    <property name="text">
     <string>Nouveau...</string>
    </property>
@@ -149,6 +161,10 @@
    </property>
   </action>
   <action name="actionEnregistrer">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/save</normaloff>:/icons/save</iconset>
+   </property>
    <property name="text">
     <string>Enregistrer</string>
    </property>
@@ -157,6 +173,10 @@
    </property>
   </action>
   <action name="actionEnregistrer_sous">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/saveas</normaloff>:/icons/saveas</iconset>
+   </property>
    <property name="text">
     <string>Enregistrer sous...</string>
    </property>
@@ -165,11 +185,19 @@
    </property>
   </action>
   <action name="action_propos_de_Moustache">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/about</normaloff>:/icons/about</iconset>
+   </property>
    <property name="text">
     <string>À propos de Moustache...</string>
    </property>
   </action>
   <action name="actionOuvrir">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/open</normaloff>:/icons/open</iconset>
+   </property>
    <property name="text">
     <string>Ouvrir...</string>
    </property>
@@ -178,6 +206,10 @@
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/preferences</normaloff>:/icons/preferences</iconset>
+   </property>
    <property name="text">
     <string>Préférences...</string>
    </property>
@@ -198,7 +230,9 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionQuitter</sender>
