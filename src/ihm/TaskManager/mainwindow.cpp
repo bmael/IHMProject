@@ -18,12 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //ui->tasksView->header()->hide();
 
-    mapping_ = new QMap<QStandardItem *, TaskComponent *>();
+    mapping_ = new QMap<QList<QStandardItem *> * , TaskComponent *>();
 
     this->newProject(QString::fromStdString("Plopiplop"), 0, QDate::currentDate());
 
     connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
     connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
+    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
+    connect(ui->tasksView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(prepareTaskDescriptionModification(QModelIndex)));
     connect(ui->tasksView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedItem(QModelIndex)));
 
 
@@ -60,16 +62,22 @@ void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
     this->currentProject_ = new TaskList(projectName.toStdString());
     this->currentProject_->setPriority(priority);
+    this->currentProject_->setEndDate(date.toString("d/MM/yyyy").toStdString());
+    this->currentProject_->setIsOrdered(false);
 
-    this->currentProjectItem_ = new QStandardItem( (QString::fromStdString(this->currentProject_->getDescription()) + " " + date.toString("d/MM/yyyy")) );
+    this->currentProjectItem_ = new QList<QStandardItem *>();
+    currentProjectItem_->append(new QStandardItem( (QString::fromStdString(this->currentProject_->getDescription())) ));
+    currentProjectItem_->append(new QStandardItem());
+    currentProjectItem_->at(1)->setData(QVariant(date), 2);
+
     this->selectedItem_ = currentProjectItem_;
 
     mapping_->insert(currentProjectItem_, currentProject_);
 
-    currentProjectItem_->setCheckable(true);
+    currentProjectItem_->at(0)->setCheckable(true);
 
-    model_->setItem(0, 0, currentProjectItem_);
-    model_->setItem(0, 1, new QStandardItem(date.toString()));
+    model_->setItem(0, 0, currentProjectItem_->at(0));
+    model_->setItem(0, 1, currentProjectItem_->at(1));
 }
 
 
@@ -79,20 +87,30 @@ void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
     // Creating the new TaskList
     TaskList * t = new TaskList(taskListDesc.toStdString());
     t->setPriority(priority);
+    t->setEndDate(date.toString("d/MM/yyyy").toStdString());
+    t->setIsOrdered(false);
 
-    // Creating the matching QStandardItem
-    QStandardItem * i = new QStandardItem(taskListDesc + " " + date.toString("d/MM/yyyy"));
+    // Creating the matching QStandardItems
+    QStandardItem * i = new QStandardItem(taskListDesc);
+    QStandardItem * d = new QStandardItem();
     i->setCheckable(true);
+    d->setData(QVariant(date), 2);
+
+    QList<QStandardItem *> * l = new QList<QStandardItem *>();
+    l->append(i);
+    l->append(d);
 
     // Inserting the couple in the map
-    mapping_->insert(i, t);
+    mapping_->insert(l, t);
 
     // Updating the model and the project TaskList
-    QStandardItem * parent = selectedItem_;
+    QStandardItem * parent = selectedItem_->at(0);
 
-    ((TaskList *) mapping_->value(parent))->add(t);
-    parent->appendRow(i);
-    ui->tasksView->expand(model_->indexFromItem(selectedItem_));
+    ((TaskList *) mapping_->value(selectedItem_))->add(t);
+    parent->appendRow(*l);
+    ui->tasksView->expand(model_->indexFromItem(parent));
+
+    displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
 
     currentProject_->print();
 }
@@ -105,23 +123,79 @@ void MainWindow::newTask(QString taskDesc, int priority, QDate date) {
 
 
 
+void MainWindow::prepareTaskDescriptionModification(QModelIndex index)
+{
+    model_->blockSignals(true);
+
+    QStandardItem * i = model_->itemFromIndex(index);
+    QList<QStandardItem *> * l = findQListFromItem(i);
+
+    if ( i == l->at(0) ) {
+        TaskComponent * t = mapping_->value(l);
+
+        QString desc = QString::fromStdString(t->getDescription());
+        i->setText(desc);
+    }
+
+    model_->blockSignals(false);
+}
+
+
+
+void MainWindow::modifyTaskList(QModelIndex topLeft, QModelIndex bottomRight)
+{
+    QStandardItem * i = model_->itemFromIndex(topLeft);
+    QList<QStandardItem *> * l = findQListFromItem(i);
+    TaskList * t = (TaskList *) mapping_->value(l);
+
+    // Updating the Task state
+    // TO DO : Setting a TaskList to DONE also change its subtasks to DONE
+    if ( l->at(0)->checkState() == Qt::Checked ) {
+        t->setState(DONE);
+    }
+    else {
+        t->setState(TODO);
+    }
+
+    // Updating value for the task Description
+    if ( i == l->at(0) ) {
+        qDebug() << "description test : " << l->at(0)->data(0).toString();
+        t->setDescription(l->at(0)->data(0).toString().toStdString());
+    }
+
+    // Updating the project for the task end date
+    if ( i == l->at(1) ) {
+        qDebug() << "end date test : " << l->at(1)->data(0).toDate().toString("d/MM/yyyy");
+        t->setEndDate(l->at(1)->data(0).toDate().toString("d/MM/yyyy").toStdString());
+    }
+
+    if ( l != currentProjectItem_ ) {
+        QStandardItem * parent = i->parent();
+        displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
+    }
+
+    currentProject_->print();
+}
+
+
+
 void MainWindow::deleteTaskList()
 {
     // Retrieving the selected QStandardItem
-    QStandardItem * i = selectedItem_;
+    QList<QStandardItem *> * l = selectedItem_;
 
-    if ( i != currentProjectItem_ ) {
+    if ( l != currentProjectItem_ ) {
         // Retrieving the TaskList and its parent matching the selected QStandardItem
-        TaskList * t = (TaskList *) (mapping_->value(i));
-        TaskList * parentTask = (TaskList *) (mapping_->value(i->parent()));
+        TaskList * t = (TaskList *) (mapping_->value(l));
+        TaskList * parentTask = (TaskList *) (mapping_->value(findQListFromItem((l->at(0))->parent())));
 
         // Changing the selected item
-        ui->tasksView->setCurrentIndex(i->parent()->index());
-        this->setSelectedItem(i->parent()->index());
+        ui->tasksView->setCurrentIndex((l->at(0))->parent()->index());
+        this->setSelectedItem((l->at(0))->parent()->index());
 
         // Removing the item and the TaskList
         parentTask->remove(t);
-        (i->parent())->removeRow(i->row());
+        ((l->at(0))->parent())->removeRow((l->at(0))->row());
 
         currentProject_->print();
     }
@@ -134,16 +208,54 @@ void MainWindow::deleteTaskList()
 
 void MainWindow::setSelectedItem(QModelIndex m)
 {
-    this->selectedItem_ = model_->itemFromIndex(m);
+    this->selectedItem_ = findQListFromItem(model_->itemFromIndex(m));
+}
 
-    // Updating the Task state
-    // TO DO : Setting a TaskList to DONE also change its subtasks to DONE
-    if ( selectedItem_->checkState() == Qt::Checked ) {
-        ((TaskList *) mapping_->value(selectedItem_))->setState(DONE);
+
+
+QList<QStandardItem *> * MainWindow::findQListFromItem(QStandardItem * i)
+{
+    QList<QList<QStandardItem *> *> l = mapping_->keys();
+
+    QListIterator<QList<QStandardItem *> *> iter(l);
+
+    QList<QStandardItem *> * result = iter.next();
+    QStandardItem * compare = result->at(0);
+
+    while ( (iter.hasNext()) && (i != compare) ) {
+        result = iter.next();
+        compare = result->at(0);
+    }
+
+    return result;
+}
+
+
+
+void MainWindow::displayTaskList(QStandardItem * item, bool ordered)
+{
+    // Blocking the signals to avoid a call to modifyTaskList
+    model_->blockSignals(true);
+
+    QList<QStandardItem *> * l = findQListFromItem(item);
+    TaskComponent * t = mapping_->value(l);
+
+    if ( ordered ) {
+        qDebug() << "ordered display for " << item->data(0);
+        for ( int i = 0 ; i < item->rowCount() ; ++i ) {
+            QString desc = QString::fromStdString(mapping_->value(findQListFromItem(item->child(i, 0)))->getDescription());
+            qDebug() << "row " << i << " : " << QString::number(i+1) + ". " + desc;
+            item->child(i, 0)->setText(QString(QString::number(i+1) + ". " + desc));
+        }
     }
     else {
-        ((TaskList *) mapping_->value(selectedItem_))->setState(TODO);
+        for ( int i = 0 ; i < item->rowCount() ; ++i ) {
+            QString desc = QString::fromStdString(mapping_->value(findQListFromItem(item->child(i, 0)))->getDescription());
+            item->child(i, 0)->setText(desc);
+        }
     }
+
+    model_->blockSignals(false);
 }
 
 

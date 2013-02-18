@@ -33,12 +33,18 @@ public slots:
     void newProject(QString, int, QDate);
     //void openProject(QString);
 
+    void prepareTaskDescriptionModification(QModelIndex);
+    void modifyTaskList(QModelIndex,QModelIndex);
+
     void newTaskList(QString, int, QDate);
     void newTask(QString, int, QDate);
 
     void deleteTaskList();
 
     void setSelectedItem(QModelIndex);
+
+    QList<QStandardItem *> *findQListFromItem(QStandardItem *);
+    void displayTaskList(QStandardItem *, bool);
 
     void fillSubList(QList<QString> *list, TaskComponent * t);  // Not working yet
 
@@ -53,15 +59,15 @@ private:
     QTranslator * translator;
 
     QStandardItemModel * model_;
-    QStandardItem * selectedItem_;
+    QList<QStandardItem *> * selectedItem_;
 
     //QList<TaskList *> * openedProjects_;    // Not used yet
     //QList<QStandardItem *> * openedProjectsItem_;   // Not used yet
     //QList<QMap<QStandardItem *, TaskComponent *> > * openedProjectsMapping;   // Not used yet
 
     TaskList * currentProject_;
-    QStandardItem * currentProjectItem_;
-    QMap<QStandardItem *, TaskComponent *> * mapping_;
+    QList<QStandardItem *> * currentProjectItem_;
+    QMap<QList<QStandardItem *> *, TaskComponent *> * mapping_;
 };
 
 #endif // MAINWINDOW_H
