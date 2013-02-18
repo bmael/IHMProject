@@ -2,6 +2,7 @@
 #define TASKFORM_H
 
 #include <QWidget>
+#include <QEvent>
 
 namespace Ui {
 class TaskForm;
@@ -18,6 +19,7 @@ public:
 public slots:
     void showAbsoluteTimeLimit();
     void showRelativeTimeLimit();
+    void retranslate();
 
 signals:
     void hideThis();

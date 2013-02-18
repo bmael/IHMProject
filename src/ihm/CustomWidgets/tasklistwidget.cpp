@@ -16,6 +16,10 @@ TaskListWidget::TaskListWidget(QWidget *parent) :
 
     connect(this, SIGNAL(askFillSubList(QList<QString> *)), ui->taskListForm, SLOT(fillSubList(QList<QString> *)));
     connect(ui->taskListForm, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SIGNAL(sendNewTaskList(QString,int,QDate)));
+
+    //retranslation
+    connect(this, SIGNAL(askRetranslate()), ui->taskListForm, SLOT(retranslate()));
+
 }
 
 TaskListWidget::~TaskListWidget()
@@ -38,3 +42,11 @@ void TaskListWidget::showModifyTaskListForm() {
 void TaskListWidget::hideListForm() {
     ui->taskListForm->hide();
 }
+
+void TaskListWidget::retranslate()
+{
+    ui->retranslateUi(this);
+    emit askRetranslate();
+}
+
+

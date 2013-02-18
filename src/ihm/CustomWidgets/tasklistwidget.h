@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDate>
+#include <QEvent>
 
 #include "../../Concept/Manager/taskcomponent.h"
 #include "../../Concept/Manager/tasklist.h"
@@ -24,11 +25,14 @@ signals:
     void sendNewTaskList(QString, int, QDate);
     void sendRemoveTaskList();
     void askFillSubList(QList<QString> *);
+    void askRetranslate();
 
 public slots:
     void showNewTaskListForm();
     void showModifyTaskListForm();
     void hideListForm();
+
+    void retranslate();
 
 private:
     Ui::TaskListWidget *ui;

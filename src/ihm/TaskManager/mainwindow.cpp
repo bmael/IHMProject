@@ -2,7 +2,11 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QStandardItem>
+#include <QTranslator>
 #include <iostream>
+
+#include "../CustomWidgets/aboutdialog.h"
+#include "../CustomWidgets/preferencies.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -10,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    translator = new QTranslator(0);
 
     //ui->tasksView->header()->hide();
 
@@ -21,7 +26,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
     connect(ui->tasksView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedItem(QModelIndex)));
 
+
+    // Graphic components
+    connect(ui->action_propos_de_Moustache, SIGNAL(triggered()), this, SLOT(aboutPopup()));
+    connect(ui->actionPreferences, SIGNAL(triggered()), this, SLOT(preferenciesPopup()));
+
+    //retranslation
+    connect(this, SIGNAL(retranslate()), ui->taskListTools, SLOT(retranslate()));
+    connect(this, SIGNAL(retranslate()), ui->taskTools, SLOT(retranslate()));
+
+
     this->fillSubList(new QList<QString>(), this->currentProject_);
+
 }
 
 
@@ -145,4 +161,47 @@ void MainWindow::fillSubList(QList<QString> *list, TaskComponent *t)
 //        ++itb;
 //    }
 //    emit askFillSubList(list);
+}
+
+
+void MainWindow::aboutPopup()
+{
+    AboutDialog dial;
+    dial.exec();
+}
+
+void MainWindow::preferenciesPopup()
+{
+    Preferencies * pref = new Preferencies(this);
+    connect(pref, SIGNAL(languageChanged(LangType)), this, SLOT(changeLanguage(LangType)));
+    pref->exec();
+}
+
+void MainWindow::changeLanguage(LangType lang)
+{
+    switch(lang){
+        case FR:
+            qDebug() << "French language selected";
+            translator->load("ihm_fr.qm");
+            break;
+        case EN:
+            qDebug() << "English language selected";
+            translator->load("ihm_en.qm");
+            break;
+    }
+
+
+    qApp->installTranslator(translator);
+
+}
+
+void MainWindow::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::LanguageChange)
+    {
+        ui->retranslateUi(this);
+        emit retranslate();
+    }
+
+    QMainWindow::changeEvent(event);
 }

@@ -64,3 +64,10 @@ void ListForm::prepareNewTaskList() {
 
     emit hideThis();
 }
+
+void ListForm::retranslate()
+{
+    ui->retranslateUi(this);
+}
+
+

@@ -2,6 +2,7 @@
 #define TASKWIDGET_H
 
 #include <QWidget>
+#include <QEvent>
 
 namespace Ui {
 class TaskWidget;
@@ -19,6 +20,12 @@ public slots:
     void showNewTaskForm();
     void showModifyTaskForm();
     void hideTaskForm();
+
+    void retranslate();
+
+signals:
+    void askRetranslate();
+
 
 private:
     Ui::TaskWidget *ui;

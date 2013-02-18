@@ -37,3 +37,10 @@ void TaskForm::showRelativeTimeLimit() {
     ui->timeLimitRelativeLabel->show();
     ui->timeLimitAbsolute->hide();
 }
+
+void TaskForm::retranslate()
+{
+    ui->retranslateUi(this);
+}
+
+

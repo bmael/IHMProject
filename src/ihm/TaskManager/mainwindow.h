@@ -5,10 +5,13 @@
 #include <QStandardItemModel>
 #include <QList>
 #include <QDate>
+#include <QTranslator>
 
 #include "../../Concept/Manager/task.h"
 #include "../../Concept/Manager/taskcomponent.h"
 #include "../../Concept/Manager/tasklist.h"
+
+#include "../CustomWidgets/preferencies.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +27,7 @@ public:
 
 signals:
     void askFillSubList(QList<QString> *);
+    void retranslate();
 
 public slots:
     void newProject(QString, int, QDate);
@@ -38,8 +42,15 @@ public slots:
 
     void fillSubList(QList<QString> *list, TaskComponent * t);  // Not working yet
 
+private slots:
+    void aboutPopup();          // Display the about popup
+    void preferenciesPopup();   // Display the preferencies popup
+    void changeLanguage(LangType lang); // Change the language of the application
+    void changeEvent(QEvent *);
+
 private:
     Ui::MainWindow *ui;
+    QTranslator * translator;
 
     QStandardItemModel * model_;
     QStandardItem * selectedItem_;

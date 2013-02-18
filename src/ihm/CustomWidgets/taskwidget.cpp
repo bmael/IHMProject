@@ -12,6 +12,10 @@ TaskWidget::TaskWidget(QWidget *parent) :
     connect(ui->newTask, SIGNAL(clicked()), this, SLOT(showNewTaskForm()));
     connect(ui->modifyTask, SIGNAL(clicked()), this, SLOT(showModifyTaskForm()));
     connect(ui->taskForm, SIGNAL(hideThis()), this, SLOT(hideTaskForm()));
+
+    //retranslation
+    connect(this, SIGNAL(askRetranslate()), ui->taskForm, SLOT(retranslate()));
+
 }
 
 TaskWidget::~TaskWidget()
@@ -34,3 +38,11 @@ void TaskWidget::showModifyTaskForm() {
 void TaskWidget::hideTaskForm() {
     ui->taskForm->hide();
 }
+
+void TaskWidget::retranslate()
+{
+    ui->retranslateUi(this);
+    emit askRetranslate();
+}
+
+

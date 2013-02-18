@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDate>
+#include <QEvent>
 
 #include "../../Concept/Manager/taskcomponent.h"
 #include "../../Concept/Manager/tasklist.h"
@@ -27,6 +28,8 @@ public slots:
     void fillSubList(QList<QString> *);
 
     void prepareNewTaskList();
+
+    void retranslate();
 
 signals:
     void hideThis();

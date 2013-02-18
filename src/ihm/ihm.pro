@@ -24,3 +24,5 @@ MOC_DIR = .cmp/moc
 RCC_DIR = .cmp/rcc
 UI_DIR = .cmp/ui
 
+TRANSLATIONS = ihm_en.ts
+
