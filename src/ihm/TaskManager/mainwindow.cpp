@@ -48,9 +48,9 @@ void MainWindow::init()
 
 //    this->newProject(QString::fromStdString("Plopiplop"), 0, QDate::currentDate());
 
-    connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTask(QString,int,QDate)));
-    connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTask()));
-    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTask(QModelIndex,QModelIndex)));
+    connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
+    connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
+    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
     connect(ui->tasksView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(prepareTaskDescriptionModification(QModelIndex)));
     connect(ui->tasksView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedItem(QModelIndex)));
 
@@ -191,17 +191,25 @@ void MainWindow::newTask(QString taskDesc, int priority, QDate date) {
         TaskComponent * newTaskList = new TaskList(savedDesc);
         newTaskList->setPriority(savedPriority);
         newTaskList->setEndDate(savedDate);
+
+        // Adding the new Task to the created TaskList
         ((TaskList *) newTaskList)->add(t);
 
         // Replacing the old Task
-        std::deque<TaskComponent *> * deck = ((TaskList *) mapping_->value(findQListFromItem(parent->parent())))->getTasksReference();
+        TaskList * deckList = (TaskList *) mapping_->value(findQListFromItem(parent->parent()));
+
+        std::deque<TaskComponent *> * deck = deckList->getTasksReference();
 
         std::deque<TaskComponent *>::iterator itr = std::find(deck->begin(), deck->end(), parentTask);
-        qDebug() << "Erasing " << deck->size();
+
         if( itr != deck->end())
         {
             deck->erase(itr);
+            qDebug() << QString::fromStdString(newTaskList->getDescription());
             deck->insert(itr, newTaskList);
+        }
+        else {
+            qDebug() << "NOT FOUND IN DECK!!!";
         }
 
         //delete parentTask;
@@ -209,7 +217,7 @@ void MainWindow::newTask(QString taskDesc, int priority, QDate date) {
         mapping_->remove(selectedItem_);
         mapping_->insert(selectedItem_, newTaskList);
 
-        //this->selectedItem_ = findQListFromItem(parent);
+        this->selectedItem_ = findQListFromItem(parent);
     }
 
     parent->appendRow(*l);
@@ -390,6 +398,7 @@ void MainWindow::deleteTask()
 void MainWindow::setSelectedItem(QModelIndex m)
 {
     this->selectedItem_ = findQListFromItem(model_->itemFromIndex(m));
+    qDebug() << "setSelectedItem : " << selectedItem_->at(0)->data(0);
 }
 
 
