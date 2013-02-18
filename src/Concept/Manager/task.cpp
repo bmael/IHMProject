@@ -12,12 +12,14 @@
 Task::Task()
 {
     this->priority_ = 0;
+    this->state_ = TODO;
 }
 
 Task::Task(std::string desc)
 {
     this->description_ = desc;
     this->priority_ = 0;
+    this->state_ = TODO;
 }
 
 Task::~Task()
@@ -37,7 +39,7 @@ void Task::print(int depth) const
          tmp++;
      }
     std::cout << "\t|-";
-    std::cout << " [" << this->priority_ << "] (" << this->endDate_ << ")" << this->description_ << " : ";
+    std::cout << " Type : task [" << this->priority_ << "] (" << this->endDate_ << ")" << this->description_ << " : ";
     this->state_ ? std::cout << "DONE" << std::endl : std::cout << "TODO" << std::endl;
 }
 

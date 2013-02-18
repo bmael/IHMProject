@@ -42,6 +42,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+MainWindow::MainWindow(LangType language, QWidget *parent)
+{
+    this->changeLanguage(language);
+}
+
 
 
 MainWindow::~MainWindow()

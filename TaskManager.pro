@@ -6,9 +6,10 @@
 
 
 TEMPLATE = subdirs
-SUBDIRS = $$PWD/src/ihm \
-    $$PWD/src/lib \
+SUBDIRS = $$PWD/src/lib \
+    $$PWD/src/ihm \
     $$PWD/src/Concept
 
 $$PWD/src/Concept.depends = $$PWD/src/lib
 $$PWD/src/Concept/Tools.depends = $$PWD/src/Concept/Manager
+$$PWD/src/ihm/Tools.depends = $$PWD/src/lib

@@ -17,15 +17,26 @@ TaskList::TaskList(const TaskList &tl) : TaskComponent(tl),tasks_(tl.getTasks())
 TaskList::TaskList()
 {
     this->priority_ = 0;
+    this->state_ = TODO;
+    this->isOrdered_ = false;
 }
 
 TaskList::TaskList(std::string description)
 {
     this->description_ = description;
     this->priority_ = 0;
+    this->state_ = TODO;
+    this->isOrdered_ = false;
 }
 
-TaskList::~TaskList(){}
+TaskList::~TaskList(){
+    unsigned int size=this->tasks_.size();
+    if(size>0){
+        for(unsigned int i=0;i<size;i++){
+            this->tasks_.erase(this->tasks_.begin());
+        }
+    }
+}
 
 std::deque<TaskComponent*> TaskList::getTasks() const
 {
@@ -85,7 +96,7 @@ void TaskList::print(int depth) const
         tmp++;
     }
     std::cout << "|-";
-    std::cout << " ["<< this->getPriority() << "]("<< this->endDate_ << ")[" << this->getDescription()<< "]" << " : ";
+    std::cout << " Type : tasklist ["<< this->getPriority() << "]("<< this->endDate_ << ")[" << this->getDescription()<< "]" << " : ";
     this->state_ ? std::cout << "DONE" << std::endl : std::cout << "TODO" << std::endl;
 
     while(itb != ite ){
@@ -98,6 +109,3 @@ void TaskList::print(int depth) const
         ++itb;
     }
 }
-
-
-

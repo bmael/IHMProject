@@ -23,7 +23,10 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    MainWindow(LangType language, QWidget *parent = 0);
     ~MainWindow();
+
+
 
 signals:
     void askFillSubList(QList<QString> *);

@@ -7,6 +7,7 @@ DEPENDPATH += $$PWD
 
 include($$PWD/CustomWidgets/CustomWidgets.pri)
 include($$PWD/TaskManager/TaskManager.pri)
+include($$PWD/Tools/Tools.pri)
 
 WARNINGS += -Wall
 

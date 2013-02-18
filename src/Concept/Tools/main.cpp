@@ -14,6 +14,9 @@ int main(int argc, char *argv[])
     TaskList * list2 = parse("../../../sample/testSaving.xml");
     list2->print();
 
+    delete list;
+    delete list2;
+
     return 0;
 }
 
