@@ -12,8 +12,8 @@
 #define PARSER_H
 
 #include "../lib/pugixml_sources/pugixml.hpp"
-#include "Manager/task.h"
-#include "Manager/tasklist.h"
+#include "../Manager/task.h"
+#include "../Manager/tasklist.h"
 
 /**
  * @brief Parses an xml and creates the TaskList according to this xml file.
@@ -43,7 +43,7 @@ Task * parseTask(pugi::xml_node tasknode);
  * @param list
  * @param file_path
  */
-void save(TaskList * list, const char * file_path);
+void save(TaskList * list, std::string file_path);
 
 void addTaskList(TaskList * list, pugi::xml_node node);
 void addTask(Task * task, pugi::xml_node node);

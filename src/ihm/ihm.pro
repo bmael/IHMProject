@@ -20,6 +20,7 @@ TARGET = ../../TaskManager
 
 LIBS += ../Concept/Manager/libManager.a
 LIBS += ../lib/liblib.a
+LIBS += ../Concept/Tools/libTools.a
 
 OBJECTS_DIR = .cmp/ojb
 MOC_DIR = .cmp/moc

@@ -115,7 +115,7 @@ TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList * list){
 
 }
 
-void save(TaskList * list, const char * file_path){
+void save(TaskList * list, std::string file_path){
     pugi::xml_document doc;
 
     pugi::xml_node mainTaskList = doc.append_child(pugi::node_element);
@@ -147,7 +147,7 @@ void save(TaskList * list, const char * file_path){
         else addTaskList((TaskList *)c, mainTaskList);
     }
 
-    doc.save_file(file_path);
+    doc.save_file(file_path.c_str());
 }
 
 void addTaskList(TaskList * list, pugi::xml_node node){
