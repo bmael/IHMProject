@@ -60,8 +60,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>280</width>
-          <height>410</height>
+          <width>100</width>
+          <height>30</height>
          </rect>
         </property>
         <attribute name="label">
@@ -73,8 +73,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>280</width>
-          <height>410</height>
+          <width>100</width>
+          <height>30</height>
          </rect>
         </property>
         <attribute name="label">
@@ -139,7 +139,7 @@
   </action>
   <action name="actionNouveau">
    <property name="text">
-    <string>Nouveau</string>
+    <string>Nouveau...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
@@ -168,7 +168,7 @@
   </action>
   <action name="actionOuvrir">
    <property name="text">
-    <string>Ouvrir</string>
+    <string>Ouvrir...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
