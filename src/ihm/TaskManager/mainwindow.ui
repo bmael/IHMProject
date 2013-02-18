@@ -47,8 +47,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>280</width>
-          <height>410</height>
+          <width>290</width>
+          <height>382</height>
          </rect>
         </property>
         <attribute name="label">
@@ -60,8 +60,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>100</width>
-          <height>30</height>
+          <width>98</width>
+          <height>28</height>
          </rect>
         </property>
         <attribute name="label">
@@ -73,8 +73,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>100</width>
-          <height>30</height>
+          <width>98</width>
+          <height>28</height>
          </rect>
         </property>
         <attribute name="label">
@@ -84,6 +84,9 @@
       </widget>
       <widget class="QTreeView" name="tasksView">
        <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="animated">
         <bool>true</bool>
        </property>
       </widget>
@@ -98,7 +101,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
