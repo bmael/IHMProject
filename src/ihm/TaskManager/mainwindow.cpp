@@ -3,11 +3,13 @@
 #include <QDebug>
 #include <QStandardItem>
 #include <QTranslator>
+#include <QFileDialog>
 #include <iostream>
 #include "../Tools/configuration.h"
 #include "../Tools/loadconfiguration.h"
 #include "../CustomWidgets/aboutdialog.h"
 #include "../CustomWidgets/preferencies.h"
+#include "../CustomWidgets/projectwidget.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -40,8 +42,11 @@ void MainWindow::init()
     //ui->tasksView->header()->hide();
 
     mapping_ = new QMap<QList<QStandardItem *> * , TaskComponent *>();
+    model_ = new QStandardItemModel(1,2);
+    this->currentProject_ = new TaskList();
+    this->currentProjectItem_ = new QList<QStandardItem *>();
 
-    this->newProject(QString::fromStdString("Plopiplop"), 0, QDate::currentDate());
+//    this->newProject(QString::fromStdString("Plopiplop"), 0, QDate::currentDate());
 
     connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
     connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
@@ -53,6 +58,8 @@ void MainWindow::init()
     // Graphic components
     connect(ui->action_propos_de_Moustache, SIGNAL(triggered()), this, SLOT(aboutPopup()));
     connect(ui->actionPreferences, SIGNAL(triggered()), this, SLOT(preferenciesPopup()));
+    connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(openProject()));
+    connect(ui->actionNouveau, SIGNAL(triggered()), this, SLOT(configureNewProject()));
 
 
     //retranslation
@@ -67,19 +74,26 @@ void MainWindow::init()
   SLOTS
  */
 
+void MainWindow::configureNewProject()
+{
+    ProjectWidget pw;
+    connect(&pw, SIGNAL(transmitConfiguration(QString, int, QDate)), this, SLOT(newProject(QString,int,QDate)));
+    pw.exec();
+
+}
+
 void MainWindow::newProject(QString projectName, int priority, QDate date) {
-    model_ = new QStandardItemModel(1,2);
+
     ui->tasksView->setModel(model_);
 
     //ui->tasksView->setColumnWidth(0, ui->tasksView->width() - 50);
     ui->tasksView->setColumnWidth(1, 50);
 
-    this->currentProject_ = new TaskList(projectName.toStdString());
+    this->currentProject_->setDescription(projectName.toStdString());
     this->currentProject_->setPriority(priority);
     this->currentProject_->setEndDate(date.toString("d/MM/yyyy").toStdString());
     this->currentProject_->setIsOrdered(false);
 
-    this->currentProjectItem_ = new QList<QStandardItem *>();
     currentProjectItem_->append(new QStandardItem( (QString::fromStdString(this->currentProject_->getDescription())) ));
     currentProjectItem_->append(new QStandardItem());
     currentProjectItem_->at(1)->setData(QVariant(date), 2);
@@ -92,6 +106,13 @@ void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
     model_->setItem(0, 0, currentProjectItem_->at(0));
     model_->setItem(0, 1, currentProjectItem_->at(1));
+}
+
+void MainWindow::openProject()
+{
+    QString file = QFileDialog::getOpenFileName(this, tr("Ouvrir un projet"), QString(), QString("*.mst"));
+
+    // TODO display the result of parsing for file_path
 }
 
 
@@ -333,3 +354,5 @@ void MainWindow::changeEvent(QEvent* event)
 
     QMainWindow::changeEvent(event);
 }
+
+

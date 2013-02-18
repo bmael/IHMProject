@@ -34,8 +34,9 @@ signals:
     void retranslate();
 
 public slots:
+    void configureNewProject();
     void newProject(QString, int, QDate);
-    //void openProject(QString);
+    void openProject();
 
     void prepareTaskDescriptionModification(QModelIndex);
     void modifyTaskList(QModelIndex,QModelIndex);

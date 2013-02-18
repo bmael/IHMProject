@@ -8,7 +8,8 @@ HEADERS += \
     CustomWidgets/taskwidget.h \
     CustomWidgets/taskform.h \
     CustomWidgets/aboutdialog.h \
-    CustomWidgets/preferencies.h
+    CustomWidgets/preferencies.h \
+    CustomWidgets/projectwidget.h
 
 
 SOURCES += \
@@ -17,7 +18,8 @@ SOURCES += \
     CustomWidgets/taskwidget.cpp \
     CustomWidgets/taskform.cpp \
     CustomWidgets/aboutdialog.cpp \
-    CustomWidgets/preferencies.cpp
+    CustomWidgets/preferencies.cpp \
+    CustomWidgets/projectwidget.cpp
 
 
 FORMS += \
@@ -26,5 +28,6 @@ FORMS += \
     CustomWidgets/taskwidget.ui \
     CustomWidgets/taskform.ui \
     CustomWidgets/aboutdialog.ui \
-    CustomWidgets/preferencies.ui
+    CustomWidgets/preferencies.ui \
+    CustomWidgets/projectwidget.ui
 
