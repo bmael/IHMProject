@@ -26,7 +26,8 @@ public:
     MainWindow(LangType language, QWidget *parent = 0);
     ~MainWindow();
 
-
+private:
+    void init();    // Initializes the interface
 
 signals:
     void askFillSubList(QList<QString> *);

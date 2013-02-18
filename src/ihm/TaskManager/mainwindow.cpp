@@ -15,6 +15,26 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    init();
+}
+
+MainWindow::MainWindow(LangType language, QWidget *parent) :
+       QMainWindow(parent),
+       ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    init();
+    this->changeLanguage(language);
+}
+
+MainWindow::~MainWindow()
+{
+    saveConfig("conf/session.conf");
+    delete ui;
+}
+
+void MainWindow::init()
+{
     translator = new QTranslator(0);
 
     //ui->tasksView->header()->hide();
@@ -34,56 +54,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_propos_de_Moustache, SIGNAL(triggered()), this, SLOT(aboutPopup()));
     connect(ui->actionPreferences, SIGNAL(triggered()), this, SLOT(preferenciesPopup()));
 
+
     //retranslation
     connect(this, SIGNAL(retranslate()), ui->taskListTools, SLOT(retranslate()));
     connect(this, SIGNAL(retranslate()), ui->taskTools, SLOT(retranslate()));
 
 
     this->fillSubList(new QList<QString>(), this->currentProject_);
-
-}
-
-MainWindow::MainWindow(LangType language, QWidget *parent) :
-       QMainWindow(parent),
-       ui(new Ui::MainWindow)
-   {
-       ui->setupUi(this);
-       translator = new QTranslator(0);
-
-       //ui->tasksView->header()->hide();
-
-       mapping_ = new QMap<QList<QStandardItem *> * , TaskComponent *>();
-
-       this->newProject(QString::fromStdString("Plopiplop"), 0, QDate::currentDate());
-
-       connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
-       connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
-       connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
-       connect(ui->tasksView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(prepareTaskDescriptionModification(QModelIndex)));
-       connect(ui->tasksView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedItem(QModelIndex)));
-
-
-       // Graphic components
-       connect(ui->action_propos_de_Moustache, SIGNAL(triggered()), this, SLOT(aboutPopup()));
-       connect(ui->actionPreferences, SIGNAL(triggered()), this, SLOT(preferenciesPopup()));
-
-
-       //retranslation
-       connect(this, SIGNAL(retranslate()), ui->taskListTools, SLOT(retranslate()));
-       connect(this, SIGNAL(retranslate()), ui->taskTools, SLOT(retranslate()));
-
-
-       this->fillSubList(new QList<QString>(), this->currentProject_);
-
-    this->changeLanguage(language);
-}
-
-
-
-MainWindow::~MainWindow()
-{
-    saveConfig("conf/session.conf");
-    delete ui;
 }
 
 /*
