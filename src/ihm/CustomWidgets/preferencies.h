@@ -15,7 +15,7 @@ class Preferencies : public QDialog
     Q_OBJECT
     
 public:
-    explicit Preferencies(QWidget *parent = 0);
+    explicit Preferencies(LangType lang = FR, QWidget *parent = 0);
     ~Preferencies();
     
 signals:
