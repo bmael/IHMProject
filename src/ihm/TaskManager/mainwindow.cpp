@@ -48,9 +48,9 @@ void MainWindow::init()
 
 //    this->newProject(QString::fromStdString("Plopiplop"), 0, QDate::currentDate());
 
-    connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
-    connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
-    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
+    connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTask(QString,int,QDate)));
+    connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTask()));
+    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTask(QModelIndex,QModelIndex)));
     connect(ui->tasksView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(prepareTaskDescriptionModification(QModelIndex)));
     connect(ui->tasksView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedItem(QModelIndex)));
 
@@ -182,36 +182,40 @@ void MainWindow::newTask(QString taskDesc, int priority, QDate date) {
         ((TaskList *) parentTask)->add(t);
     }
     else {
-        qDebug() << QString::fromStdString(parentTask->getDescription()) << "is not yet a TaskList";
+        qDebug() << QString::fromStdString(parentTask->getDescription()) << "is not yet a TaskList ; " << findQListFromItem(parent->parent())->at(0)->data(0);
         // Creating a new TaskList to replace the previous Task
         std::string savedDesc = parentTask->getDescription();
         int savedPriority = parentTask->getPriority();
         std::string savedDate = parentTask->getEndDate();
 
-        parentTask = new TaskList(savedDesc);
-        parentTask->setPriority(savedPriority);
-        parentTask->setEndDate(savedDate);
-        ((TaskList *) parentTask)->add(t);
+        TaskComponent * newTaskList = new TaskList(savedDesc);
+        newTaskList->setPriority(savedPriority);
+        newTaskList->setEndDate(savedDate);
+        ((TaskList *) newTaskList)->add(t);
 
-        //qDebug() << "New list : " << QString::fromStdString(newParentTask->getDescription());
+        // Replacing the old Task
+        std::deque<TaskComponent *> * deck = ((TaskList *) mapping_->value(findQListFromItem(parent->parent())))->getTasksReference();
 
-        // Adding the new Task to the created TaskList
-        //((TaskList *) newParentTask)->add(t);
+        std::deque<TaskComponent *>::iterator itr = std::find(deck->begin(), deck->end(), parentTask);
+        qDebug() << "Erasing " << deck->size();
+        if( itr != deck->end())
+        {
+            deck->erase(itr);
+            deck->insert(itr, newTaskList);
+        }
 
-        //parentTask = newParentTask;
+        //delete parentTask;
 
-//        mapping_->remove(findQListFromItem(parent));
-//        mapping_->insert(findQListFromItem(parent), parentTask);
+        mapping_->remove(selectedItem_);
+        mapping_->insert(selectedItem_, newTaskList);
 
-        this->selectedItem_ = findQListFromItem(parent);
-
-        //delete newParentTask;
+        //this->selectedItem_ = findQListFromItem(parent);
     }
 
     parent->appendRow(*l);
     ui->tasksView->expand(model_->indexFromItem(parent));
 
-    //displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
+    displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
 
     currentProject_->print();
 }
@@ -274,6 +278,44 @@ void MainWindow::modifyTaskList(QModelIndex topLeft, QModelIndex bottomRight)
 
 
 
+void MainWindow::modifyTask(QModelIndex topLeft, QModelIndex bottomRight)
+{
+    QStandardItem * i = model_->itemFromIndex(topLeft);
+    QList<QStandardItem *> * l = findQListFromItem(i);
+    TaskComponent * t = mapping_->value(l);
+
+    // Updating the Task state
+    // TO DO : Setting a TaskList to DONE also change its subtasks to DONE
+    if ( l->at(0)->checkState() == Qt::Checked ) {
+        t->setState(DONE);
+    }
+    else {
+        t->setState(TODO);
+    }
+
+    // Updating value for the task Description
+    if ( i == l->at(0) ) {
+        qDebug() << "description test : " << l->at(0)->data(0).toString();
+        t->setDescription(l->at(0)->data(0).toString().toStdString());
+    }
+
+    // Updating the project for the task end date
+    if ( i == l->at(1) ) {
+        qDebug() << "end date test : " << l->at(1)->data(0).toDate().toString("d/MM/yyyy");
+        t->setEndDate(l->at(1)->data(0).toDate().toString("d/MM/yyyy").toStdString());
+    }
+
+    // Refreshing the display
+    if ( l != currentProjectItem_ ) {
+        QStandardItem * parent = i->parent();
+        displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
+    }
+
+    currentProject_->print();
+}
+
+
+
 void MainWindow::deleteTaskList()
 {
     // Retrieving the selected QStandardItem
@@ -304,6 +346,42 @@ void MainWindow::deleteTaskList()
     }
     else {
         qDebug() << "You can't delete the main TaskList";
+    }
+}
+
+
+
+void MainWindow::deleteTask()
+{
+    // Retrieving the selected QStandardItem
+    QList<QStandardItem *> * l = selectedItem_;
+
+    if ( l != currentProjectItem_ ) {
+        // Retrieving the TaskList and its parent matching the selected QStandardItem
+        TaskList * t = (TaskList *) (mapping_->value(l));
+        TaskList * parentTask = (TaskList *) (mapping_->value(findQListFromItem((l->at(0))->parent())));
+
+        // Changing the selected item
+        ui->tasksView->setCurrentIndex((l->at(0))->parent()->index());
+        this->setSelectedItem((l->at(0))->parent()->index());
+
+        qDebug() << "New CurrentItem after deletion :";
+        qDebug() << (l->at(0))->parent()->data(0);
+        qDebug() << this->selectedItem_->at(0)->data(0);
+
+        // Removing the item and the TaskList
+        parentTask->remove(t);
+
+        int row = l->at(0)->row();
+        ((l->at(0))->parent())->removeRow(row);
+
+        mapping_->remove(l);
+
+        currentProject_->print();
+    }
+    else {
+        qDebug() << "You can't delete the main TaskList";
+        ui->statusBar->showMessage("Vous ne pouvez supprimer la liste du projet");
     }
 }
 

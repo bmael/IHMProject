@@ -22,6 +22,7 @@ public:
 
     /** GETTERS **/
     std::deque<TaskComponent*> getTasks() const;
+    std::deque<TaskComponent*> * getTasksReference();
     TaskComponentType getType() const;
     TaskComponent* getComponent(unsigned long int pos);
     bool getIsOrdered() const;

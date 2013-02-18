@@ -43,6 +43,11 @@ std::deque<TaskComponent*> TaskList::getTasks() const
     return this->tasks_;
 }
 
+std::deque<TaskComponent*> *TaskList::getTasksReference()
+{
+    return &tasks_;
+}
+
 TaskComponentType TaskList::getType() const
 {
     return TASKLIST;

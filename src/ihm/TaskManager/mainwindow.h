@@ -40,11 +40,13 @@ public slots:
 
     void prepareTaskDescriptionModification(QModelIndex);
     void modifyTaskList(QModelIndex,QModelIndex);
+    void modifyTask(QModelIndex,QModelIndex);
 
     void newTaskList(QString, int, QDate);
     void newTask(QString, int, QDate);
 
     void deleteTaskList();
+    void deleteTask();
 
     void setSelectedItem(QModelIndex);
 
