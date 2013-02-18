@@ -11,5 +11,7 @@
         <file alias="new">img/new.png</file>
         <file alias="preferences">img/preferences.png</file>
         <file alias="moustache">img/logo.png</file>
+        <file alias="add">img/add.png</file>
+        <file alias="remove">img/remove.png</file>
     </qresource>
 </RCC>
