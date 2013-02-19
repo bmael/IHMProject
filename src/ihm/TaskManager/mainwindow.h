@@ -66,6 +66,7 @@ private slots:
     void preferenciesPopup();   // Display the preferencies popup
     void changeLanguage(LangType lang); // Change the language of the application
     void changeEvent(QEvent *);
+    void closeApplication();
 
 private:
     Ui::MainWindow *ui;

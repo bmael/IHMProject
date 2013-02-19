@@ -42,7 +42,7 @@ MainWindow::MainWindow(LangType language, QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    saveConfig("conf/session.conf");
+
     delete ui;
 }
 
@@ -75,6 +75,7 @@ void MainWindow::init()
     connect(ui->actionEnregistrer_sous, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
     connect(ui->actionEnregistrer, SIGNAL(triggered()), this, SLOT(saveProject()));
     connect(ui->actionImprimer, SIGNAL(triggered()), this, SLOT(print()));
+    connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(closeApplication()));
 
 
     //retranslation
@@ -153,7 +154,7 @@ void MainWindow::openProject()
 
         switch (ret) {
             case QMessageBox::Save:
-            // Save was clicked
+            saveProject();
             break;
         case QMessageBox::Discard:
             // Don't Save was clicked
@@ -702,6 +703,38 @@ void MainWindow::changeEvent(QEvent* event)
     }
 
     QMainWindow::changeEvent(event);
+}
+
+void MainWindow::closeApplication()
+{
+    if ( currentProjectNotSaved_ ) {
+        QMessageBox askSave;
+
+        askSave.setIcon(QMessageBox::Question);
+        askSave.setText("Le projet à été modifié");
+        askSave.setInformativeText("Voulez-vous enregister les changements?");
+        askSave.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        askSave.setDefaultButton(QMessageBox::Save);
+
+        int ret = askSave.exec();
+
+        switch (ret) {
+            case QMessageBox::Save:
+            saveProject();
+            break;
+        case QMessageBox::Discard:
+            // Don't Save was clicked
+            break;
+        case QMessageBox::Cancel:
+            // Cancel was clicked
+            return;
+            break;
+        default:
+            break;
+        }
+    }
+    saveConfig("conf/session.conf");
+    this->close();
 }
 
 

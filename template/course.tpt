@@ -17,7 +17,7 @@
     
   </tasklist>
   
-  <tasklist>
+  <tasklist isOrdered="true">
     <title>Préparation du TD</title>
     
     <task>
@@ -32,7 +32,7 @@
     
   </tasklist>
   
-  <tasklist>
+  <tasklist isOrdered="true">
     <title>Préparation du TP</title>
     
     <task>
