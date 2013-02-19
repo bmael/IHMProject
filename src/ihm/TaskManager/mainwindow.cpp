@@ -114,6 +114,7 @@ void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
     currentProjectNotSaved_ = true;
     ui->tasksView->setModel(model_);
+    ui->tasksView->header()->resizeSection(0, 250);
 
     //ui->tasksView->setColumnWidth(0, ui->tasksView->width() - 50);
     ui->tasksView->setColumnWidth(1, 50);
@@ -211,6 +212,7 @@ void MainWindow::openProject(QString file_path)
     model_->setItem(0, 1, currentProjectItem_->at(1));
 
     ui->tasksView->setModel(model_);
+    ui->tasksView->header()->resizeSection(0, 250);
     ui->tasksView->expandAll();
 
     connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
