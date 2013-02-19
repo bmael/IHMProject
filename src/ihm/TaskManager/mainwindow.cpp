@@ -98,19 +98,59 @@ void MainWindow::init()
     /** Toolbar **/
     QLayout * mainLayout = new QVBoxLayout(this);
 
+    QPushButton * newProject = new QPushButton(this);
+    newProject->setToolTip(tr("Créer un nouveau projet"));
+    newProject->setIcon(QIcon(":/icons/new"));
+    connect(newProject, SIGNAL(clicked()), this, SLOT(configureNewProject()));
+
+    QPushButton * openProject = new QPushButton(this);
+    openProject->setToolTip(tr("Ouvrir un projet"));
+    openProject->setIcon(QIcon(":/icons/open"));
+    connect(openProject, SIGNAL(clicked()), this, SLOT(openProject()));
+
+    QPushButton * save = new QPushButton(this);
+    save->setToolTip(tr("Enregistrer"));
+    save->setIcon(QIcon(":/icons/save"));
+    connect(save, SIGNAL(clicked()), this, SLOT(saveProject()));
+
+    QPushButton * saveas = new QPushButton(this);
+    saveas->setToolTip(tr("Enregistrer sous"));
+    saveas->setIcon(QIcon(":/icons/saveas"));
+    connect(saveas, SIGNAL(clicked()), this, SLOT(saveProjectAs()));
+
     QPushButton * add = new QPushButton(this);
-    add->setText(tr("Nouveau"));
+    add->setToolTip(tr("Ajouter une tâche"));
     add->setIcon(QIcon(":/icons/add"));
     connect(add, SIGNAL(clicked()), this, SLOT(showAddTaskWidget()));
 
     QPushButton * remove = new QPushButton(this);
-    remove->setText(tr("Supprimer"));
+    remove->setToolTip(tr("Supprimer la tâche sélectionnée"));
     remove->setIcon(QIcon(":/icons/remove"));
     connect(remove, SIGNAL(clicked()), this, SLOT(deleteTaskList()));
 
+    QPushButton * print = new QPushButton(this);
+    print->setToolTip(tr("Imprimer le projet"));
+    print->setIcon(QIcon(":/icons/printer"));
+    connect(print, SIGNAL(clicked()), this, SLOT(print()));
+
     ui->toolBar->setLayout(mainLayout);
+
+    ui->toolBar->addWidget(newProject);
+    ui->toolBar->addWidget(openProject);
+    ui->toolBar->addSeparator();
+
+    ui->toolBar->addWidget(save);
+    ui->toolBar->addWidget(saveas);
+    ui->toolBar->addSeparator();
+
     ui->toolBar->addWidget(add);
     ui->toolBar->addWidget(remove);
+    ui->toolBar->addSeparator();
+
+    ui->toolBar->addWidget(print);
+
+
+
 
     this->fillSubList(new QList<QString>(), this->currentProject_);
 }
