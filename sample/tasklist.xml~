@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tasklist isOrdered="true">
+<tasklist isOrdered="1">
   <title>Liste de tâches pour nos tests</title>
   <state>1</state>
   <task>

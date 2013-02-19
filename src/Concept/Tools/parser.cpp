@@ -24,6 +24,7 @@ TaskList * parse(const char * file_path){
     if(result){
         // if the xml file is open correctly, initializes the main taskList for the recursion.
         pugi::xml_node mainTaskList = doc.child("tasklist");
+        res->setIsOrdered(mainTaskList.attribute("isOrdered").as_bool());
         res->setDescription(mainTaskList.child("title").text().as_string());
         res->setPriority(mainTaskList.child("priority").text().as_int());
         res->setEndDate(mainTaskList.child("date").text().as_string());
@@ -58,6 +59,7 @@ TaskList * parseTaskList(pugi::xml_node tasklistnode, TaskList * list){
             TaskList * toAdd = new TaskList();
 
             toAdd = parseTaskList(child,toAdd);
+            toAdd->setIsOrdered(child.attribute("isOrdered").as_bool());
 
             if(toAdd->getPriority()!=0 ){
 
@@ -121,6 +123,8 @@ void save(TaskList * list, std::string file_path){
     pugi::xml_node mainTaskList = doc.append_child(pugi::node_element);
     mainTaskList.set_name("tasklist");
 
+    pugi::xml_attribute isOrdered = mainTaskList.append_attribute("isOrdered");
+    isOrdered.set_value(list->getIsOrdered());
 
     // Initializes the main node
     pugi::xml_node title = mainTaskList.append_child("title");
@@ -153,6 +157,8 @@ void save(TaskList * list, std::string file_path){
 void addTaskList(TaskList * list, pugi::xml_node node){
 
     pugi::xml_node child = node.append_child("tasklist");
+    pugi::xml_attribute isOrdered = child.append_attribute("isOrdered");
+    isOrdered.set_value(list->getIsOrdered());
 
     pugi::xml_node title = child.append_child("title");
     title.append_child(pugi::node_pcdata).set_value(list->getDescription().c_str());

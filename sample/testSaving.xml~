@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<tasklist>
+	<title>Liste de tâches pour nos tests</title>
+	<priority>0</priority>
+	<date></date>
+	<state>1</state>
+	<tasklist>
+		<title>Implémentation des concepts</title>
+		<priority>1</priority>
+		<date></date>
+		<state>0</state>
+		<task>
+			<desc>Implémenter le concept "TaskList"</desc>
+			<priority>1</priority>
+			<date></date>
+			<state>0</state>
+		</task>
+		<task>
+			<desc>Implémenter le concept "Task"</desc>
+			<priority>2</priority>
+			<date></date>
+			<state>0</state>
+		</task>
+		<task>
+			<desc>Prise en compte de la priorité sur les tâches</desc>
+			<priority>3</priority>
+			<date></date>
+			<state>0</state>
+		</task>
+		<tasklist>
+			<title>TaskList of taskList</title>
+			<priority>0</priority>
+			<date></date>
+			<state>0</state>
+			<task>
+				<desc>does it work ?</desc>
+				<priority>0</priority>
+				<date></date>
+				<state>0</state>
+			</task>
+		</tasklist>
+	</tasklist>
+	<task>
+		<desc>Réaliser le parseur XML</desc>
+		<priority>2</priority>
+		<date>2013-02-17</date>
+		<state>1</state>
+	</task>
+</tasklist>
