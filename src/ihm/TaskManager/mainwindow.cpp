@@ -53,6 +53,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
+    addFormHidden_ = true;
+
     translator = new QTranslator(0);
 
     //ui->tasksView->header()->hide();
@@ -83,6 +85,7 @@ void MainWindow::init()
     connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(closeApplication()));
 
     connect(ui->addTaskListWidget, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
+    connect(ui->addTaskListWidget, SIGNAL(rejected()), this, SLOT(hideAddTaskWidget()));
 
     ui->addTaskListWidget->setMaximumWidth(0);
 
@@ -367,8 +370,6 @@ void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
     displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
 
     currentProject_->print();
-
-    this->hideAddTaskWidget();
 
 }
 
@@ -699,14 +700,18 @@ void MainWindow::fillSubList(QList<QString> *list, TaskComponent *t)
 
 void MainWindow::showAddTaskWidget()
 {
+    if(!addFormHidden_) return;
+
     QPropertyAnimation * animation = new QPropertyAnimation(ui->addTaskListWidget, "maximumWidth");
 
     animation->setDuration(1000);
 
     animation->setStartValue(ui->addTaskListWidget->maximumWidth());
     animation->setEndValue(350);
+    ui->showHidepushButton->setIcon(QIcon(":/icons/hide"));
 
-     animation->setEasingCurve(QEasingCurve::OutBack);
+    animation->setEasingCurve(QEasingCurve::OutBack);
+    addFormHidden_ = false;
 
     animation->start(QPropertyAnimation::DeleteWhenStopped);
 
@@ -715,6 +720,7 @@ void MainWindow::showAddTaskWidget()
 
 void MainWindow::hideAddTaskWidget()
 {
+    if(addFormHidden_) return;
 
     QPropertyAnimation * animation = new QPropertyAnimation(ui->addTaskListWidget, "maximumWidth");
 
@@ -722,8 +728,10 @@ void MainWindow::hideAddTaskWidget()
 
     animation->setStartValue(ui->addTaskListWidget->maximumWidth());
     animation->setEndValue(0);
+    ui->showHidepushButton->setIcon(QIcon(":/icons/show"));
 
     animation->setEasingCurve(QEasingCurve::InBack);
+    addFormHidden_ = true;
 
     animation->start(QPropertyAnimation::DeleteWhenStopped);
 
@@ -811,3 +819,12 @@ void MainWindow::closeApplication()
 }
 
 
+
+void MainWindow::on_showHidepushButton_clicked()
+{
+    if(addFormHidden_) {
+        showAddTaskWidget();
+    }else{
+        hideAddTaskWidget();
+    }
+}
