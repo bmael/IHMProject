@@ -37,7 +37,6 @@ private:
 
 
 signals:
-    void askFillSubList(QList<QString> *);
     void retranslate(); // Send when the user changes the application language
 
 public slots:
@@ -65,7 +64,6 @@ public slots:
     QList<QStandardItem *> *findQListFromItem(QStandardItem *);
     void displayTaskList(QStandardItem *, bool);    // Displays a TaskList on our gui
 
-    void fillSubList(QList<QString> *list, TaskComponent * t);  // Not working yet
 
     void showAddTaskWidget();
     void hideAddTaskWidget();

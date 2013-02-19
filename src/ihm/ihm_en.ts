@@ -122,62 +122,64 @@ p, li { white-space: pre-wrap; }
         <translation>Moustache</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="59"/>
         <source>Listes</source>
-        <translation>Lists</translation>
+        <translation type="obsolete">Lists</translation>
     </message>
     <message utf8="true">
-        <location filename="TaskManager/mainwindow.ui" line="72"/>
         <source>Tâches</source>
-        <translation>Tasks</translation>
+        <translation type="obsolete">Tasks</translation>
     </message>
     <message utf8="true">
-        <location filename="TaskManager/mainwindow.ui" line="85"/>
         <source>Détails</source>
-        <translation>Details</translation>
+        <translation type="obsolete">Details</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="122"/>
+        <location filename="TaskManager/mainwindow.ui" line="535"/>
         <source>&amp;Fichier</source>
         <translation>&amp;File</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="136"/>
+        <location filename="TaskManager/mainwindow.ui" line="549"/>
         <source>&amp;Aide</source>
         <translation>&amp;Help</translation>
     </message>
     <message utf8="true">
-        <location filename="TaskManager/mainwindow.ui" line="142"/>
+        <location filename="TaskManager/mainwindow.ui" line="555"/>
         <source>&amp;Édition</source>
         <translation>&amp;Edit</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="156"/>
+        <location filename="TaskManager/mainwindow.ui" line="565"/>
+        <source>toolBar</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="TaskManager/mainwindow.ui" line="581"/>
         <source>Quitter</source>
         <translation>Quit</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="159"/>
+        <location filename="TaskManager/mainwindow.ui" line="584"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="168"/>
+        <location filename="TaskManager/mainwindow.ui" line="593"/>
         <source>Nouveau...</source>
         <translation>New...</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="219"/>
+        <location filename="TaskManager/mainwindow.ui" line="644"/>
         <source>Ouvrir...</source>
         <translation>Open...</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="240"/>
+        <location filename="TaskManager/mainwindow.ui" line="665"/>
         <source>Imprimer...</source>
         <translation>Print...</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="243"/>
+        <location filename="TaskManager/mainwindow.ui" line="668"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
@@ -186,32 +188,33 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">New</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="171"/>
+        <location filename="TaskManager/mainwindow.ui" line="596"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="183"/>
+        <location filename="TaskManager/mainwindow.ui" line="608"/>
+        <location filename="TaskManager/mainwindow.cpp" line="112"/>
         <source>Enregistrer</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="186"/>
+        <location filename="TaskManager/mainwindow.ui" line="611"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="198"/>
+        <location filename="TaskManager/mainwindow.ui" line="623"/>
         <source>Enregistrer sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="201"/>
+        <location filename="TaskManager/mainwindow.ui" line="626"/>
         <source>Ctrl+Shift+S</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message utf8="true">
-        <location filename="TaskManager/mainwindow.ui" line="210"/>
+        <location filename="TaskManager/mainwindow.ui" line="635"/>
         <source>À propos de Moustache...</source>
         <translation>About Moustache...</translation>
     </message>
@@ -220,27 +223,53 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Open</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.ui" line="222"/>
+        <location filename="TaskManager/mainwindow.ui" line="647"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message utf8="true">
-        <location filename="TaskManager/mainwindow.ui" line="231"/>
+        <location filename="TaskManager/mainwindow.ui" line="656"/>
         <source>Préférences...</source>
         <translation>Preferencies...</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.cpp" line="175"/>
+        <location filename="TaskManager/mainwindow.cpp" line="102"/>
+        <source>CrÃ©er un nouveau projet</source>
+        <translation>Create a new project</translation>
+    </message>
+    <message>
+        <location filename="TaskManager/mainwindow.cpp" line="107"/>
+        <location filename="TaskManager/mainwindow.cpp" line="239"/>
         <source>Ouvrir un projet</source>
         <translation>Open a project</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.cpp" line="224"/>
+        <location filename="TaskManager/mainwindow.cpp" line="117"/>
+        <source>Enregistrer sous</source>
+        <translation>Save as</translation>
+    </message>
+    <message>
+        <location filename="TaskManager/mainwindow.cpp" line="122"/>
+        <source>Ajouter une tÃ¢che</source>
+        <translation>Add a task</translation>
+    </message>
+    <message>
+        <location filename="TaskManager/mainwindow.cpp" line="127"/>
+        <source>Supprimer la tÃ¢che sÃ©lectionnÃ©e</source>
+        <translation>delete the selected task</translation>
+    </message>
+    <message>
+        <location filename="TaskManager/mainwindow.cpp" line="132"/>
+        <source>Imprimer le projet</source>
+        <translation>Print the project</translation>
+    </message>
+    <message>
+        <location filename="TaskManager/mainwindow.cpp" line="288"/>
         <source>Sauvegarder sous...</source>
         <translation>Save as...</translation>
     </message>
     <message>
-        <location filename="TaskManager/mainwindow.cpp" line="249"/>
+        <location filename="TaskManager/mainwindow.cpp" line="313"/>
         <source>Impression du projet</source>
         <translation>Print the project</translation>
     </message>
@@ -289,90 +318,62 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TaskForm</name>
     <message>
-        <location filename="CustomWidgets/taskform.ui" line="14"/>
-        <source>Form</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="CustomWidgets/taskform.ui" line="34"/>
         <source>Nom</source>
-        <translation>Name</translation>
+        <translation type="obsolete">Name</translation>
     </message>
     <message utf8="true">
-        <location filename="CustomWidgets/taskform.ui" line="44"/>
         <source>Sous-tâche de</source>
-        <translation>Subtask of</translation>
+        <translation type="obsolete">Subtask of</translation>
     </message>
     <message utf8="true">
-        <location filename="CustomWidgets/taskform.ui" line="54"/>
         <source>Priorité</source>
-        <translation>Priority</translation>
+        <translation type="obsolete">Priority</translation>
     </message>
     <message>
-        <location filename="CustomWidgets/taskform.ui" line="64"/>
         <source>Date limite</source>
-        <translation>End date</translation>
+        <translation type="obsolete">End date</translation>
     </message>
     <message>
-        <location filename="CustomWidgets/taskform.ui" line="71"/>
         <source>Fixe</source>
-        <translation>Absolute</translation>
+        <translation type="obsolete">Absolute</translation>
     </message>
     <message>
-        <location filename="CustomWidgets/taskform.ui" line="81"/>
         <source>Relative</source>
-        <translation>Relative</translation>
+        <translation type="obsolete">Relative</translation>
     </message>
     <message>
-        <location filename="CustomWidgets/taskform.ui" line="107"/>
         <source>Jours</source>
-        <translation>Days</translation>
+        <translation type="obsolete">Days</translation>
     </message>
 </context>
 <context>
     <name>TaskListWidget</name>
     <message>
-        <location filename="CustomWidgets/tasklistwidget.ui" line="20"/>
-        <source>Form</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="CustomWidgets/tasklistwidget.ui" line="28"/>
         <source>Nouveau</source>
-        <translation>New</translation>
+        <translation type="obsolete">New</translation>
     </message>
     <message>
-        <location filename="CustomWidgets/tasklistwidget.ui" line="39"/>
         <source>Modifier</source>
-        <translation>Edit</translation>
+        <translation type="obsolete">Edit</translation>
     </message>
     <message>
-        <location filename="CustomWidgets/tasklistwidget.ui" line="46"/>
         <source>Supprimer</source>
-        <translation>Delete</translation>
+        <translation type="obsolete">Delete</translation>
     </message>
 </context>
 <context>
     <name>TaskWidget</name>
     <message>
-        <location filename="CustomWidgets/taskwidget.ui" line="14"/>
-        <source>Form</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="CustomWidgets/taskwidget.ui" line="22"/>
         <source>Nouveau</source>
-        <translation>New</translation>
+        <translation type="obsolete">New</translation>
     </message>
     <message>
-        <location filename="CustomWidgets/taskwidget.ui" line="33"/>
         <source>Modifier</source>
-        <translation>Edit</translation>
+        <translation type="obsolete">Edit</translation>
     </message>
     <message>
-        <location filename="CustomWidgets/taskwidget.ui" line="40"/>
         <source>Supprimer</source>
-        <translation>Delete</translation>
+        <translation type="obsolete">Delete</translation>
     </message>
 </context>
 </TS>

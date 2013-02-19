@@ -96,7 +96,7 @@ void MainWindow::init()
 
 
     /** Toolbar **/
-    QLayout * mainLayout = new QVBoxLayout(this);
+    QLayout * mainLayout = new QVBoxLayout();
 
     QPushButton * newProject = new QPushButton(this);
     newProject->setToolTip(tr("Créer un nouveau projet"));
@@ -149,10 +149,6 @@ void MainWindow::init()
 
     ui->toolBar->addWidget(print);
 
-
-
-
-    this->fillSubList(new QList<QString>(), this->currentProject_);
 }
 
 /*
@@ -723,20 +719,7 @@ void MainWindow::displayTaskList(QStandardItem * item, bool ordered)
 
 
 
-void MainWindow::fillSubList(QList<QString> *list, TaskComponent *t)
-{
-//    std::deque<TaskComponent*>::const_iterator itb = this->currentProject_->getTasks().begin();
-//    const std::deque<TaskComponent*>::const_iterator ite = this->currentProject_->getTasks().end();
 
-//    while ( itb != ite ) {
-//        if ( (*itb)->getType() == TASKLIST ) {
-//            list->append(QString::fromStdString((*itb)->getDescription()));
-//            this->fillSubList(list, ((TaskList *) (*itb)));
-//        }
-//        ++itb;
-//    }
-    //    emit askFillSubList(list);
-}
 
 void MainWindow::showAddTaskWidget()
 {
