@@ -34,8 +34,13 @@ public slots:
     void clear();
 
 signals:
+    void rejected();
     void hideThis();
     void sendNewTaskList(QString, int, QDate);
+
+
+private slots:
+    void on_acceptList_rejected();
 
 private:
     Ui::ListForm *ui;

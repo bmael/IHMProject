@@ -79,6 +79,8 @@ private slots:
     void changeEvent(QEvent *); // Detects when the language change
     void closeApplication();    // Close the application
 
+    void on_showHidepushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QTranslator * translator;
@@ -95,6 +97,8 @@ private:
     QList<QStandardItem *> * currentProjectItem_;
     bool currentProjectNotSaved_;
     QMap<QList<QStandardItem *> *, TaskComponent *> * mapping_;
+
+    bool addFormHidden_;
 
 };
 

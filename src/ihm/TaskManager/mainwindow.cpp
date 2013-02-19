@@ -53,6 +53,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
+    addFormHidden_ = true;
+
     translator = new QTranslator(0);
 
     ui->tasksView->header()->hide();
@@ -83,6 +85,7 @@ void MainWindow::init()
     connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(closeApplication()));
 
     connect(ui->addTaskListWidget, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
+    connect(ui->addTaskListWidget, SIGNAL(rejected()), this, SLOT(hideAddTaskWidget()));
 
     ui->addTaskListWidget->setMaximumWidth(0);
 
@@ -95,19 +98,59 @@ void MainWindow::init()
     /** Toolbar **/
     QLayout * mainLayout = new QVBoxLayout(this);
 
+    QPushButton * newProject = new QPushButton(this);
+    newProject->setToolTip(tr("Créer un nouveau projet"));
+    newProject->setIcon(QIcon(":/icons/new"));
+    connect(newProject, SIGNAL(clicked()), this, SLOT(configureNewProject()));
+
+    QPushButton * openProject = new QPushButton(this);
+    openProject->setToolTip(tr("Ouvrir un projet"));
+    openProject->setIcon(QIcon(":/icons/open"));
+    connect(openProject, SIGNAL(clicked()), this, SLOT(openProject()));
+
+    QPushButton * save = new QPushButton(this);
+    save->setToolTip(tr("Enregistrer"));
+    save->setIcon(QIcon(":/icons/save"));
+    connect(save, SIGNAL(clicked()), this, SLOT(saveProject()));
+
+    QPushButton * saveas = new QPushButton(this);
+    saveas->setToolTip(tr("Enregistrer sous"));
+    saveas->setIcon(QIcon(":/icons/saveas"));
+    connect(saveas, SIGNAL(clicked()), this, SLOT(saveProjectAs()));
+
     QPushButton * add = new QPushButton(this);
-    add->setText(tr("Nouveau"));
+    add->setToolTip(tr("Ajouter une tâche"));
     add->setIcon(QIcon(":/icons/add"));
     connect(add, SIGNAL(clicked()), this, SLOT(showAddTaskWidget()));
 
     QPushButton * remove = new QPushButton(this);
-    remove->setText(tr("Supprimer"));
+    remove->setToolTip(tr("Supprimer la tâche sélectionnée"));
     remove->setIcon(QIcon(":/icons/remove"));
     connect(remove, SIGNAL(clicked()), this, SLOT(deleteTaskList()));
 
+    QPushButton * print = new QPushButton(this);
+    print->setToolTip(tr("Imprimer le projet"));
+    print->setIcon(QIcon(":/icons/printer"));
+    connect(print, SIGNAL(clicked()), this, SLOT(print()));
+
     ui->toolBar->setLayout(mainLayout);
+
+    ui->toolBar->addWidget(newProject);
+    ui->toolBar->addWidget(openProject);
+    ui->toolBar->addSeparator();
+
+    ui->toolBar->addWidget(save);
+    ui->toolBar->addWidget(saveas);
+    ui->toolBar->addSeparator();
+
     ui->toolBar->addWidget(add);
     ui->toolBar->addWidget(remove);
+    ui->toolBar->addSeparator();
+
+    ui->toolBar->addWidget(print);
+
+
+
 
     this->fillSubList(new QList<QString>(), this->currentProject_);
 }
@@ -374,8 +417,6 @@ void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
     adaptColumn(currentProjectItem_->at(0)->index(), currentProjectItem_->at(0)->index());
 
     currentProject_->print();
-
-    this->hideAddTaskWidget();
 
 }
 
@@ -706,14 +747,18 @@ void MainWindow::fillSubList(QList<QString> *list, TaskComponent *t)
 
 void MainWindow::showAddTaskWidget()
 {
+    if(!addFormHidden_) return;
+
     QPropertyAnimation * animation = new QPropertyAnimation(ui->addTaskListWidget, "maximumWidth");
 
     animation->setDuration(1000);
 
     animation->setStartValue(ui->addTaskListWidget->maximumWidth());
-    animation->setEndValue(350);
+    animation->setEndValue(250);
+    ui->showHidepushButton->setIcon(QIcon(":/icons/hide"));
 
-     animation->setEasingCurve(QEasingCurve::OutBack);
+    animation->setEasingCurve(QEasingCurve::OutBack);
+    addFormHidden_ = false;
 
     animation->start(QPropertyAnimation::DeleteWhenStopped);
 
@@ -722,6 +767,7 @@ void MainWindow::showAddTaskWidget()
 
 void MainWindow::hideAddTaskWidget()
 {
+    if(addFormHidden_) return;
 
     QPropertyAnimation * animation = new QPropertyAnimation(ui->addTaskListWidget, "maximumWidth");
 
@@ -729,8 +775,10 @@ void MainWindow::hideAddTaskWidget()
 
     animation->setStartValue(ui->addTaskListWidget->maximumWidth());
     animation->setEndValue(0);
+    ui->showHidepushButton->setIcon(QIcon(":/icons/show"));
 
     animation->setEasingCurve(QEasingCurve::InBack);
+    addFormHidden_ = true;
 
     animation->start(QPropertyAnimation::DeleteWhenStopped);
 
@@ -831,3 +879,12 @@ void MainWindow::closeApplication()
 }
 
 
+
+void MainWindow::on_showHidepushButton_clicked()
+{
+    if(addFormHidden_) {
+        showAddTaskWidget();
+    }else{
+        hideAddTaskWidget();
+    }
+}

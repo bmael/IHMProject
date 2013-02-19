@@ -11,5 +11,7 @@
         <file alias="add">img/add.png</file>
         <file alias="remove">img/remove.png</file>
         <file alias="printer">img/printer.png</file>
+        <file alias="show">img/deployArrow.png</file>
+        <file alias="hide">img/retractArrow.png</file>
     </qresource>
 </RCC>

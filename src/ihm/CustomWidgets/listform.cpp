@@ -79,3 +79,9 @@ void ListForm::clear()
 }
 
 
+
+void ListForm::on_acceptList_rejected()
+{
+    this->clear();
+    emit rejected();
+}
