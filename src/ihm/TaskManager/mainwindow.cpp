@@ -11,6 +11,9 @@
 #include <QPrintPreviewDialog>
 
 #include <QMessageBox>
+#include <QPushButton>
+
+#include <QPropertyAnimation>
 
 #include <iostream>
 #include "../Tools/configuration.h"
@@ -62,8 +65,8 @@ void MainWindow::init()
 
 //    this->newProject(QString::fromStdString("Plopiplop"), 0, QDate::currentDate());
 
-    connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
-    connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
+//    connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
+//    connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
     connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
     connect(ui->tasksView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(prepareTaskDescriptionModification(QModelIndex)));
     connect(ui->tasksView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedItem(QModelIndex)));
@@ -79,11 +82,32 @@ void MainWindow::init()
     connect(ui->actionImprimer, SIGNAL(triggered()), this, SLOT(print()));
     connect(ui->actionQuitter, SIGNAL(triggered()), this, SLOT(closeApplication()));
 
+    connect(ui->addTaskListWidget, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
+
+    ui->addTaskListWidget->setMaximumWidth(0);
+
 
     //retranslation
-    connect(this, SIGNAL(retranslate()), ui->taskListTools, SLOT(retranslate()));
-    connect(this, SIGNAL(retranslate()), ui->taskTools, SLOT(retranslate()));
+//    connect(this, SIGNAL(retranslate()), ui->taskListTools, SLOT(retranslate()));
+//    connect(this, SIGNAL(retranslate()), ui->taskTools, SLOT(retranslate()));
 
+
+    /** Toolbar **/
+    QLayout * mainLayout = new QVBoxLayout(this);
+
+    QPushButton * add = new QPushButton(this);
+    add->setText(tr("Nouveau"));
+    add->setIcon(QIcon(":/icons/add"));
+    connect(add, SIGNAL(clicked()), this, SLOT(showAddTaskWidget()));
+
+    QPushButton * remove = new QPushButton(this);
+    remove->setText(tr("Supprimer"));
+    remove->setIcon(QIcon(":/icons/remove"));
+    connect(remove, SIGNAL(clicked()), this, SLOT(deleteTaskList()));
+
+    ui->toolBar->setLayout(mainLayout);
+    ui->toolBar->addWidget(add);
+    ui->toolBar->addWidget(remove);
 
     this->fillSubList(new QList<QString>(), this->currentProject_);
 }
@@ -308,6 +332,8 @@ void MainWindow::loadCurrentProjectItem(TaskList * currentList, QList<QStandardI
 
 
 
+
+
 void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
     currentProjectNotSaved_ = true;
 
@@ -341,6 +367,9 @@ void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
     displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
 
     currentProject_->print();
+
+    this->hideAddTaskWidget();
+
 }
 
 
@@ -665,8 +694,41 @@ void MainWindow::fillSubList(QList<QString> *list, TaskComponent *t)
 //        }
 //        ++itb;
 //    }
-//    emit askFillSubList(list);
+    //    emit askFillSubList(list);
 }
+
+void MainWindow::showAddTaskWidget()
+{
+    QPropertyAnimation * animation = new QPropertyAnimation(ui->addTaskListWidget, "maximumWidth");
+
+    animation->setDuration(1000);
+
+    animation->setStartValue(ui->addTaskListWidget->maximumWidth());
+    animation->setEndValue(350);
+
+     animation->setEasingCurve(QEasingCurve::OutBack);
+
+    animation->start(QPropertyAnimation::DeleteWhenStopped);
+
+
+}
+
+void MainWindow::hideAddTaskWidget()
+{
+
+    QPropertyAnimation * animation = new QPropertyAnimation(ui->addTaskListWidget, "maximumWidth");
+
+    animation->setDuration(1000);
+
+    animation->setStartValue(ui->addTaskListWidget->maximumWidth());
+    animation->setEndValue(0);
+
+    animation->setEasingCurve(QEasingCurve::InBack);
+
+    animation->start(QPropertyAnimation::DeleteWhenStopped);
+
+}
+
 
 
 void MainWindow::aboutPopup()
@@ -715,6 +777,8 @@ void MainWindow::changeEvent(QEvent* event)
 
 void MainWindow::closeApplication()
 {
+    qDebug() << "closing the applicaiton";
+
     if ( currentProjectNotSaved_ ) {
         QMessageBox askSave;
 

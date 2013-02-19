@@ -25,12 +25,16 @@ public:
     MainWindow(QString file_path, LangType language, QWidget *parent = 0);
     ~MainWindow();
 
+//    void closeEvent(QCloseEvent *event);
+
 private:
     void init();    // Initializes the interface
     void loadCurrentProjectItem(TaskList * currentList,
                                 QList<QStandardItem *> * currentItem,
                                 QMap<QList<QStandardItem *> *,
                                 TaskComponent *> * mapping);
+
+
 
 signals:
     void askFillSubList(QList<QString> *);
@@ -63,6 +67,9 @@ public slots:
 
     void fillSubList(QList<QString> *list, TaskComponent * t);  // Not working yet
 
+    void showAddTaskWidget();
+    void hideAddTaskWidget();
+
 private slots:
     void aboutPopup();          // Display the about popup
     void preferenciesPopup();   // Display the preferencies popup
@@ -86,6 +93,7 @@ private:
     QList<QStandardItem *> * currentProjectItem_;
     bool currentProjectNotSaved_;
     QMap<QList<QStandardItem *> *, TaskComponent *> * mapping_;
+
 };
 
 #endif // MAINWINDOW_H

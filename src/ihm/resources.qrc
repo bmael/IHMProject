@@ -1,7 +1,4 @@
 <RCC>
-    <qresource prefix="/language">
-        <file alias="EN">ihm_en.qm</file>
-    </qresource>
     <qresource prefix="/icons">
         <file alias="about">img/about.png</file>
         <file alias="save">img/save.png</file>

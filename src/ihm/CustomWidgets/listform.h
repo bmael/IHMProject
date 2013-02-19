@@ -31,6 +31,8 @@ public slots:
 
     void retranslate();
 
+    void clear();
+
 signals:
     void hideThis();
     void sendNewTaskList(QString, int, QDate);

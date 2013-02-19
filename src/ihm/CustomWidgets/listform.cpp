@@ -62,12 +62,20 @@ void ListForm::prepareNewTaskList() {
                              );
     }
 
+    this->clear();
     emit hideThis();
 }
 
 void ListForm::retranslate()
 {
     ui->retranslateUi(this);
+}
+
+void ListForm::clear()
+{
+    ui->listName->clear();
+    ui->priority->setValue(0);
+    ui->timeLimitChoiceAbsolute->setChecked(true);
 }
 
 
