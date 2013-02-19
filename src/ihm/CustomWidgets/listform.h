@@ -25,8 +25,6 @@ public slots:
     void showAbsoluteTimeLimit();
     void showRelativeTimeLimit();
 
-    void fillSubList(QList<QString> *);
-
     void prepareNewTaskList();
 
     void retranslate();

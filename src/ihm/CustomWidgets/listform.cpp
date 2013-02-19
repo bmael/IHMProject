@@ -42,12 +42,6 @@ void ListForm::showRelativeTimeLimit() {
     ui->timeLimitAbsolute->hide();
 }
 
-void ListForm::fillSubList(QList<QString> *list) {
-    for ( int i = 0 ; i < list->size() ; ++i ) {
-        ui->subList->addItem(list->at(i));
-    }
-}
-
 void ListForm::prepareNewTaskList() {
     if ( ui->timeLimitChoiceAbsolute->isChecked()) {
         emit sendNewTaskList(ui->listName->text(),
