@@ -31,13 +31,15 @@ MainWindow::MainWindow(QWidget *parent) :
     init();
 }
 
-MainWindow::MainWindow(LangType language, QWidget *parent) :
+MainWindow::MainWindow(QString file_path,LangType language, QWidget *parent) :
        QMainWindow(parent),
        ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     init();
     this->changeLanguage(language);
+    qDebug() << "have to load : " << file_path;
+    this->openProject(file_path);
 }
 
 MainWindow::~MainWindow()
@@ -139,7 +141,7 @@ void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
 }
 
-void MainWindow::openProject()
+void MainWindow::openProject(QString file_path)
 {
     if ( currentProjectNotSaved_ ) {
         QMessageBox askSave;
@@ -167,7 +169,13 @@ void MainWindow::openProject()
             break;
         }
     }
-    QString file = QFileDialog::getOpenFileName(this, tr("Ouvrir un projet"), QString(), QString("*.mst"));
+
+    QString file;
+    if(file_path.isNull())
+       file = QFileDialog::getOpenFileName(this, tr("Ouvrir un projet"), QString(), QString("*.mst"));
+    else{
+        file = file_path;
+    }
 
     if ( file.isNull() ) {
         return;
@@ -733,6 +741,7 @@ void MainWindow::closeApplication()
             break;
         }
     }
+    Configuration::getInstance()->setTaskListPath(this->currentProjectPath_);
     saveConfig("conf/session.conf");
     this->close();
 }

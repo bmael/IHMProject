@@ -15,8 +15,9 @@ void readConfig(const char * file_path){
         pugi::xml_node session = doc.child("session");
 
         //Last tasksList
-        pugi::xml_node tasklistpath = doc.child("tasklist");
-        Configuration::getInstance()->setTaskListPath(QString::fromStdString(tasklistpath.text().as_string()));
+        pugi::xml_node tasklist = session.child("tasklist");
+        std::cout << "read xml file path : " << tasklist.text().as_string() << std::endl;
+        Configuration::getInstance()->setTaskListPath(QString::fromStdString(tasklist.text().as_string()));
 
         // Preferences
         pugi::xml_node preferences = session.child("preferences");

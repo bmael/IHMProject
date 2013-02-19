@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
     readConfig("conf/session.conf");
 
-    MainWindow w((LangType)Configuration::getInstance()->getLanguage());
+    MainWindow w(Configuration::getInstance()->getTaskListPath(),(LangType)Configuration::getInstance()->getLanguage());
     w.show();
 
 

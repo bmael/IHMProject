@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    MainWindow(LangType language, QWidget *parent = 0);
+    MainWindow(QString file_path, LangType language, QWidget *parent = 0);
     ~MainWindow();
 
 private:
@@ -37,7 +37,7 @@ signals:
 public slots:
     void configureNewProject();
     void newProject(QString, int, QDate);
-    void openProject();
+    void openProject(QString file_path = 0);
 
     void saveProjectAs();  // Save current project as...
     void saveProject();    // Save current project
