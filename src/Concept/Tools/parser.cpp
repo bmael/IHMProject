@@ -143,7 +143,7 @@ void save(TaskList * list, std::string file_path){
     state.append_child(pugi::node_pcdata).set_value(list->getState() ? "1" : "0");
 
     // Add all others lists and tasks
-    int i;
+    unsigned int i;
     TaskComponent * c;
     for(i=0; i<list->getTasks().size(); i++){
         c = list->getComponent(i);
@@ -175,7 +175,7 @@ void addTaskList(TaskList * list, pugi::xml_node node){
     pugi::xml_node state = child.append_child("state");
     state.append_child(pugi::node_pcdata).set_value(list->getState() ? "1" : "0");
 
-    int i;
+    unsigned int i;
     TaskComponent * c;
     for(i=0; i<list->getTasks().size(); i++){
         c = list->getComponent(i);
