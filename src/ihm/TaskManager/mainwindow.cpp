@@ -110,8 +110,6 @@ void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
     model_->setItem(0, 0, currentProjectItem_->at(0));
     model_->setItem(0, 1, currentProjectItem_->at(1));
-
-    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
 }
 
 void MainWindow::openProject()
@@ -178,6 +176,8 @@ void MainWindow::openProject()
 
     ui->tasksView->setModel(model_);
     ui->tasksView->expandAll();
+
+    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
 
     // TODO display the result of parsing for file_path
 }
