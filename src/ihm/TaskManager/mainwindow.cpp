@@ -55,7 +55,7 @@ void MainWindow::init()
 {
     translator = new QTranslator(0);
 
-    //ui->tasksView->header()->hide();
+    ui->tasksView->header()->hide();
 
     mapping_ = new QMap<QList<QStandardItem *> * , TaskComponent *>();
     model_ = new QStandardItemModel(1,2);
@@ -67,7 +67,7 @@ void MainWindow::init()
 
 //    connect(ui->taskListTools, SIGNAL(sendNewTaskList(QString,int,QDate)), this, SLOT(newTaskList(QString,int,QDate)));
 //    connect(ui->taskListTools, SIGNAL(sendRemoveTaskList()), this, SLOT(deleteTaskList()));
-    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
+    //connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
     connect(ui->tasksView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(prepareTaskDescriptionModification(QModelIndex)));
     connect(ui->tasksView, SIGNAL(clicked(QModelIndex)), this, SLOT(setSelectedItem(QModelIndex)));
 
@@ -139,8 +139,8 @@ void MainWindow::newProject(QString projectName, int priority, QDate date) {
     currentProjectNotSaved_ = true;
     ui->tasksView->setModel(model_);
 
-    //ui->tasksView->setColumnWidth(0, ui->tasksView->width() - 50);
-    ui->tasksView->setColumnWidth(1, 50);
+    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
+    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(adaptColumn(QModelIndex,QModelIndex)));
 
     this->currentProject_->setDescription(projectName.toStdString());
     this->currentProject_->setPriority(priority);
@@ -238,6 +238,10 @@ void MainWindow::openProject(QString file_path)
     ui->tasksView->expandAll();
 
     connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
+    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(adaptColumn(QModelIndex,QModelIndex)));
+
+    // Resizing the first column to display the whole descriptions
+    adaptColumn(currentProjectItem_->at(0)->index(), currentProjectItem_->at(0)->index());
 
     ui->actionEnregistrer->setEnabled(true);
     ui->actionEnregistrer_sous->setEnabled(true);
@@ -365,6 +369,9 @@ void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
     ui->tasksView->expand(model_->indexFromItem(parent));
 
     displayTaskList(parent, ((TaskList *) mapping_->value(findQListFromItem(parent)))->getIsOrdered());
+
+    // Resizing the first column to display the whole descriptions
+    adaptColumn(currentProjectItem_->at(0)->index(), currentProjectItem_->at(0)->index());
 
     currentProject_->print();
 
@@ -727,6 +734,19 @@ void MainWindow::hideAddTaskWidget()
 
     animation->start(QPropertyAnimation::DeleteWhenStopped);
 
+}
+
+
+
+void MainWindow::adaptColumn(QModelIndex topLeft, QModelIndex bottomRight)
+{
+    int firstColumn= topLeft.column();
+    int lastColumn = bottomRight.column();
+    // Resize the column to the size of its contents
+    do {
+        ui->tasksView->resizeColumnToContents(firstColumn);
+        firstColumn++;
+    } while (firstColumn < lastColumn);
 }
 
 

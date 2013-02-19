@@ -70,6 +70,8 @@ public slots:
     void showAddTaskWidget();
     void hideAddTaskWidget();
 
+    void adaptColumn(QModelIndex, QModelIndex);
+
 private slots:
     void aboutPopup();          // Display the about popup
     void preferenciesPopup();   // Display the preferencies popup
