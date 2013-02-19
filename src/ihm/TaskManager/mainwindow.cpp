@@ -4,12 +4,14 @@
 #include <QStandardItem>
 #include <QTranslator>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <iostream>
 #include "../Tools/configuration.h"
 #include "../Tools/loadconfiguration.h"
 #include "../CustomWidgets/aboutdialog.h"
 #include "../CustomWidgets/preferencies.h"
 #include "../CustomWidgets/projectwidget.h"
+#include "../../Concept/Tools/parser.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -45,6 +47,7 @@ void MainWindow::init()
     model_ = new QStandardItemModel(1,2);
     this->currentProject_ = new TaskList();
     this->currentProjectItem_ = new QList<QStandardItem *>();
+    this->currentProjectNotSaved_ = false;
 
 //    this->newProject(QString::fromStdString("Plopiplop"), 0, QDate::currentDate());
 
@@ -84,6 +87,7 @@ void MainWindow::configureNewProject()
 
 void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
+    currentProjectNotSaved_ = true;
     ui->tasksView->setModel(model_);
 
     //ui->tasksView->setColumnWidth(0, ui->tasksView->width() - 50);
@@ -106,18 +110,132 @@ void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
     model_->setItem(0, 0, currentProjectItem_->at(0));
     model_->setItem(0, 1, currentProjectItem_->at(1));
+
+    connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
 }
 
 void MainWindow::openProject()
 {
+    if ( currentProjectNotSaved_ ) {
+        QMessageBox askSave;
+
+        askSave.setIcon(QMessageBox::Question);
+        askSave.setText("Le projet à été modifié");
+        askSave.setInformativeText("Voulez-vous enregister les changements?");
+        askSave.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        askSave.setDefaultButton(QMessageBox::Save);
+
+        int ret = askSave.exec();
+
+        switch (ret) {
+            case QMessageBox::Save:
+            // Save was clicked
+            break;
+        case QMessageBox::Discard:
+            // Don't Save was clicked
+            break;
+        case QMessageBox::Cancel:
+            // Cancel was clicked
+            return;
+            break;
+        default:
+            break;
+        }
+    }
     QString file = QFileDialog::getOpenFileName(this, tr("Ouvrir un projet"), QString(), QString("*.mst"));
+
+    if ( file.isNull() ) {
+        return;
+    }
+
+    delete currentProject_;
+    delete currentProjectItem_;
+    delete model_;
+    delete mapping_;
+
+    currentProject_ = parse(file.toStdString().c_str());
+    currentProject_->print();
+    currentProjectItem_ = new QList<QStandardItem *>();
+    mapping_ = new QMap<QList<QStandardItem *> *, TaskComponent *>();
+
+    currentProjectItem_->append(new QStandardItem( (QString::fromStdString(this->currentProject_->getDescription())) ));
+    currentProjectItem_->append(new QStandardItem());
+    currentProjectItem_->at(1)->setData(QVariant(QDate::fromString(QString::fromStdString(currentProject_->getEndDate()), "d/MM/yyyy")), 2);
+
+    this->selectedItem_ = currentProjectItem_;
+
+    mapping_->insert(currentProjectItem_, currentProject_);
+
+    currentProjectItem_->at(0)->setCheckable(true);
+    if ( currentProject_->getState() == DONE ) {
+        currentProjectItem_->at(0)->setCheckState(Qt::Checked);
+    }
+    loadCurrentProjectItem(currentProject_, currentProjectItem_, mapping_);
+
+    model_ = new QStandardItemModel(1, 2);
+    model_->setItem(0, 0, currentProjectItem_->at(0));
+    model_->setItem(0, 1, currentProjectItem_->at(1));
+
+    ui->tasksView->setModel(model_);
+    ui->tasksView->expandAll();
 
     // TODO display the result of parsing for file_path
 }
 
 
 
+void MainWindow::loadCurrentProjectItem(TaskList * currentList, QList<QStandardItem *> * currentItem, QMap<QList<QStandardItem *> *, TaskComponent *> * mapping)
+{
+    std::deque<TaskComponent*>::const_iterator itb = currentList->getTasksReference()->begin();
+    const std::deque<TaskComponent*>::const_iterator ite = currentList->getTasksReference()->end();
+
+    while(itb != ite ){
+        if((*itb)->getType() == TASK) {
+            QList<QStandardItem *> * l = new QList<QStandardItem *>();
+            QStandardItem * i = new QStandardItem(QString::fromStdString((*itb)->getDescription()));
+            QStandardItem * d = new QStandardItem();
+
+            l->append(i);
+            l->append(d);
+            l->at(1)->setData(QVariant(QDate::fromString(QString::fromStdString((*itb)->getEndDate()), "dd/MM/yyyy")), 2);
+            l->at(0)->setCheckable(true);
+
+            if ( (*itb)->getState() == DONE ) {
+                l->at(0)->setCheckState(Qt::Checked);
+            }
+
+            mapping->insert(l, (*itb));
+
+            currentItem->at(0)->appendRow(*l);
+        }
+        else {
+            QList<QStandardItem *> * l = new QList<QStandardItem *>();
+            QStandardItem * i = new QStandardItem(QString::fromStdString((*itb)->getDescription()));
+            QStandardItem * d = new QStandardItem();
+
+            l->append(i);
+            l->append(d);
+            l->at(1)->setData(QVariant(QDate::fromString(QString::fromStdString((*itb)->getEndDate()), "dd/MM/yyyy")), 2);
+            l->at(0)->setCheckable(true);
+
+            if ( (*itb)->getState() == DONE ) {
+                l->at(0)->setCheckState(Qt::Checked);
+            }
+
+            mapping->insert(l, (*itb));
+            (currentItem->at(0))->appendRow(*l);
+
+            loadCurrentProjectItem(((TaskList *) (*itb)), l, mapping);
+        }
+        ++itb;
+    }
+}
+
+
+
 void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
+    currentProjectNotSaved_ = true;
+
     qDebug() << "Creating new TaskList : " << taskListDesc << " - " <<  priority << " - " << date;
     // Creating the new TaskList
     TaskList * t = new TaskList(taskListDesc.toStdString());
@@ -153,6 +271,8 @@ void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
 
 
 void MainWindow::newTask(QString taskDesc, int priority, QDate date) {
+    currentProjectNotSaved_ = true;
+
     qDebug() << "Creating new Task : " << taskDesc << " - " << priority << " - " << date;
 
     // Creating the new Task
@@ -251,6 +371,8 @@ void MainWindow::prepareTaskDescriptionModification(QModelIndex index)
 
 void MainWindow::modifyTaskList(QModelIndex topLeft, QModelIndex bottomRight)
 {
+    currentProjectNotSaved_ = true;
+
     QStandardItem * i = model_->itemFromIndex(topLeft);
     QList<QStandardItem *> * l = findQListFromItem(i);
     TaskList * t = (TaskList *) mapping_->value(l);
@@ -288,6 +410,8 @@ void MainWindow::modifyTaskList(QModelIndex topLeft, QModelIndex bottomRight)
 
 void MainWindow::modifyTask(QModelIndex topLeft, QModelIndex bottomRight)
 {
+    currentProjectNotSaved_ = true;
+
     QStandardItem * i = model_->itemFromIndex(topLeft);
     QList<QStandardItem *> * l = findQListFromItem(i);
     TaskComponent * t = mapping_->value(l);
@@ -326,6 +450,8 @@ void MainWindow::modifyTask(QModelIndex topLeft, QModelIndex bottomRight)
 
 void MainWindow::deleteTaskList()
 {
+    currentProjectNotSaved_ = true;
+
     // Retrieving the selected QStandardItem
     QList<QStandardItem *> * l = selectedItem_;
 
@@ -361,6 +487,8 @@ void MainWindow::deleteTaskList()
 
 void MainWindow::deleteTask()
 {
+    currentProjectNotSaved_ = true;
+
     // Retrieving the selected QStandardItem
     QList<QStandardItem *> * l = selectedItem_;
 

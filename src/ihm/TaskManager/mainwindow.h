@@ -28,6 +28,7 @@ public:
 
 private:
     void init();    // Initializes the interface
+    void loadCurrentProjectItem(TaskList * currentList, QList<QStandardItem *> * currentItem, QMap<QList<QStandardItem *> *, TaskComponent *> * mapping);
 
 signals:
     void askFillSubList(QList<QString> *);
@@ -74,6 +75,7 @@ private:
 
     TaskList * currentProject_;
     QList<QStandardItem *> * currentProjectItem_;
+    bool currentProjectNotSaved_;
     QMap<QList<QStandardItem *> *, TaskComponent *> * mapping_;
 };
 
