@@ -4,12 +4,17 @@
 #include <QStandardItem>
 #include <QTranslator>
 #include <QFileDialog>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QPainter>
+#include <QPrintPreviewDialog>
 #include <iostream>
 #include "../Tools/configuration.h"
 #include "../Tools/loadconfiguration.h"
 #include "../CustomWidgets/aboutdialog.h"
 #include "../CustomWidgets/preferencies.h"
 #include "../CustomWidgets/projectwidget.h"
+#include "../Concept/Tools/parser.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -60,6 +65,9 @@ void MainWindow::init()
     connect(ui->actionPreferences, SIGNAL(triggered()), this, SLOT(preferenciesPopup()));
     connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(openProject()));
     connect(ui->actionNouveau, SIGNAL(triggered()), this, SLOT(configureNewProject()));
+    connect(ui->actionEnregistrer_sous, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
+    connect(ui->actionEnregistrer, SIGNAL(triggered()), this, SLOT(saveProject()));
+    connect(ui->actionImprimer, SIGNAL(triggered()), this, SLOT(print()));
 
 
     //retranslation
@@ -106,6 +114,10 @@ void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
     model_->setItem(0, 0, currentProjectItem_->at(0));
     model_->setItem(0, 1, currentProjectItem_->at(1));
+
+    ui->actionEnregistrer->setEnabled(true);
+    ui->actionEnregistrer_sous->setEnabled(true);
+
 }
 
 void MainWindow::openProject()
@@ -115,7 +127,41 @@ void MainWindow::openProject()
     // TODO display the result of parsing for file_path
 }
 
+void MainWindow::saveProjectAs()
+{
+    QString s = QFileDialog::getSaveFileName(this,tr("Sauvegarder sous..."),QDir::currentPath(), "TaskList (*.mst);;Template (*.tpt)");
+    if( !s.isNull()){
+        save(this->currentProject_, s.toStdString());
+        this->currentProjectPath_ = s;
+        Configuration::getInstance()->setTaskListPath(this->currentProjectPath_);
+    }
+}
 
+void MainWindow::saveProject()
+{
+    if(this->currentProjectPath_.isNull()) saveProjectAs();
+    else save(this->currentProject_, this->currentProjectPath_.toStdString());
+}
+
+void MainWindow::print()
+{
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setFullPage(true);
+
+    QPrintDialog dialog(&printer, this);
+    dialog.setWindowIcon(QIcon(":icons/printer"));
+    dialog.setWindowTitle(tr("Impression du projet"));
+
+    if(dialog.exec() != QDialog::Accepted) return;
+
+    QPainter painter;
+    painter.begin(&printer);
+
+    painter.scale(20, 20);
+
+    ui->tasksView->render(&painter);
+
+}
 
 void MainWindow::newTaskList(QString taskListDesc, int priority, QDate date) {
     qDebug() << "Creating new TaskList : " << taskListDesc << " - " <<  priority << " - " << date;

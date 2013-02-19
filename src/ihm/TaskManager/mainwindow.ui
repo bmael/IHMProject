@@ -51,8 +51,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>290</width>
-          <height>382</height>
+          <width>280</width>
+          <height>410</height>
          </rect>
         </property>
         <attribute name="label">
@@ -64,8 +64,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>290</width>
-          <height>382</height>
+          <width>280</width>
+          <height>410</height>
          </rect>
         </property>
         <attribute name="label">
@@ -77,8 +77,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>290</width>
-          <height>382</height>
+          <width>280</width>
+          <height>410</height>
          </rect>
         </property>
         <attribute name="label">
@@ -114,7 +114,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -126,6 +126,8 @@
     <addaction name="separator"/>
     <addaction name="actionEnregistrer"/>
     <addaction name="actionEnregistrer_sous"/>
+    <addaction name="separator"/>
+    <addaction name="actionImprimer"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
    </widget>
@@ -170,6 +172,9 @@
    </property>
   </action>
   <action name="actionEnregistrer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
      <normaloff>:/icons/save</normaloff>:/icons/save</iconset>
@@ -182,6 +187,9 @@
    </property>
   </action>
   <action name="actionEnregistrer_sous">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
      <normaloff>:/icons/saveas</normaloff>:/icons/saveas</iconset>
@@ -221,6 +229,18 @@
    </property>
    <property name="text">
     <string>Préférences...</string>
+   </property>
+  </action>
+  <action name="actionImprimer">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/printer</normaloff>:/icons/printer</iconset>
+   </property>
+   <property name="text">
+    <string>Imprimer...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>

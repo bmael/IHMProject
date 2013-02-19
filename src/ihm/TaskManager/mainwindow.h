@@ -38,6 +38,11 @@ public slots:
     void newProject(QString, int, QDate);
     void openProject();
 
+    void saveProjectAs();  // Save current project as...
+    void saveProject();    // Save current project
+
+    void print();   // Print the current project
+
     void prepareTaskDescriptionModification(QModelIndex);
     void modifyTaskList(QModelIndex,QModelIndex);
     void modifyTask(QModelIndex,QModelIndex);
@@ -73,6 +78,7 @@ private:
     //QList<QMap<QStandardItem *, TaskComponent *> > * openedProjectsMapping;   // Not used yet
 
     TaskList * currentProject_;
+    QString currentProjectPath_;
     QList<QStandardItem *> * currentProjectItem_;
     QMap<QList<QStandardItem *> *, TaskComponent *> * mapping_;
 };
