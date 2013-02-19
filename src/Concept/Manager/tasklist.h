@@ -1,6 +1,6 @@
 /* *****************************************************************************
  * File tasklist.h
- * Project TaskManager
+ * Project Moustache
  * Mael BARBIN - JULIEN Bizeul
  * M1 ALMA - Université de Nantes
  * 2012-2013
@@ -33,9 +33,9 @@ public:
     /** METHODS **/
     void print(int depth = 0) const;
 
-    void add(TaskComponent *component);
-    void insert(TaskComponent *component, int pos);
-    void remove(TaskComponent *component);
+    void add(TaskComponent *component);             // Add a component to the list
+    void insert(TaskComponent *component, int pos); // Insert a component into the list
+    void remove(TaskComponent *component);          // Remove a component from the list
 
 
 private:

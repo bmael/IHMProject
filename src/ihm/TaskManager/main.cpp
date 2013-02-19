@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QTranslator>
 #include <QTextCodec>
-#include <../ihm/TaskManager/mainwindow.h>
+#include <../ihm/Moustache/mainwindow.h>
 #include "../Tools/loadconfiguration.h"
 #include "../Tools/configuration.h"
 

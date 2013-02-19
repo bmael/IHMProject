@@ -1,6 +1,6 @@
 /* *****************************************************************************
- * File tasklist.h
- * Project TaskManager
+ * File tasklist.cpp
+ * Project Moustache
  * Mael BARBIN - JULIEN Bizeul
  * M1 ALMA - Université de Nantes
  * 2012-2013

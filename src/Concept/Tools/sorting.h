@@ -1,6 +1,6 @@
 /*******************************************************************************
  * File sorting.h
- * Project TaskManager
+ * Project Moustache
  * Mael BARBIN - JULIEN Bizeul -
  * M1 ALMA - Université de Nantes
  * 2012-2013

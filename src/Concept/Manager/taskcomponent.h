@@ -1,6 +1,6 @@
 /* *****************************************************************************
  * File taskcomponent.h
- * Project TaskManager
+ * Project Moustache
  * Mael BARBIN - JULIEN Bizeul
  * M1 ALMA - Université de Nantes
  * 2012-2013
@@ -18,18 +18,22 @@ enum TaskComponentType {TASK, TASKLIST};
 class TaskComponent
 {
 public:
-    int getPriority() const;
+
+    /** GETTERS **/
+     int getPriority() const;
      std::string getEndDate() const;
      TaskState getState() const;
      std::string getDescription() const;
      virtual TaskComponentType getType() const =0;
 
+     /** SETTERS **/
      void setPriority(int p);
      void setEndDate(std::string d);
      void setState(TaskState s);
      void setDescription(std::string desc);
 
-    virtual void print(int depth = 0) const =0;
+     /** METHODS **/
+    virtual void print(int depth = 0) const =0; // Print a component on the standard output
 
 
 protected:

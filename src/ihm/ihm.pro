@@ -6,7 +6,7 @@ DEPENDPATH += $$PWD
 #}
 
 include($$PWD/CustomWidgets/CustomWidgets.pri)
-include($$PWD/TaskManager/TaskManager.pri)
+include($$PWD/Moustache/Moustache.pri)
 include($$PWD/Tools/Tools.pri)
 
 WARNINGS += -Wall
@@ -16,7 +16,7 @@ TEMPLATE = app
 RESOURCES += \
     $$PWD/resources.qrc
 
-TARGET = ../../TaskManager
+TARGET = ../../Moustache
 
 LIBS += ../Concept/Manager/libManager.a
 LIBS += ../lib/liblib.a

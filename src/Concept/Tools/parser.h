@@ -1,11 +1,11 @@
 /* *****************************************************************************
  * File parser.h
- * Project TaskManager
+ * Project Moustache
  * Mael BARBIN - JULIEN Bizeul
  * M1 ALMA - Université de Nantes
  * 2012-2013
  *
- *  Provides some methods to parse xml file for the TaskManager program
+ *  Provides some methods to parse xml file for the Moustache program
  ******************************************************************************/
 
 #ifndef PARSER_H
@@ -45,7 +45,18 @@ Task * parseTask(pugi::xml_node tasknode);
  */
 void save(TaskList * list, std::string file_path);
 
+/**
+ * @brief Adds TaskLIst xml node to the xml node given in parameter.
+ * @param list
+ * @param node
+ */
 void addTaskList(TaskList * list, pugi::xml_node node);
+
+/**
+ * @brief Adds Task xml node to the xml node given in parameter
+ * @param task
+ * @param node
+ */
 void addTask(Task * task, pugi::xml_node node);
 
 #endif // PARSER_H

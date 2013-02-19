@@ -1,17 +1,16 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QStandardItemModel>
 #include <QList>
 #include <QDate>
+#include <QMainWindow>
 #include <QTranslator>
+#include <QStandardItemModel>
 
 #include "../../Concept/Manager/task.h"
-#include "../../Concept/Manager/taskcomponent.h"
-#include "../../Concept/Manager/tasklist.h"
-
 #include "../CustomWidgets/preferencies.h"
+#include "../../Concept/Manager/tasklist.h"
+#include "../../Concept/Manager/taskcomponent.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,16 +27,19 @@ public:
 
 private:
     void init();    // Initializes the interface
-    void loadCurrentProjectItem(TaskList * currentList, QList<QStandardItem *> * currentItem, QMap<QList<QStandardItem *> *, TaskComponent *> * mapping);
+    void loadCurrentProjectItem(TaskList * currentList,
+                                QList<QStandardItem *> * currentItem,
+                                QMap<QList<QStandardItem *> *,
+                                TaskComponent *> * mapping);
 
 signals:
     void askFillSubList(QList<QString> *);
-    void retranslate();
+    void retranslate(); // Send when the user changes the application language
 
 public slots:
-    void configureNewProject();
-    void newProject(QString, int, QDate);
-    void openProject(QString file_path = 0);
+    void configureNewProject();                 // Configure the new Project
+    void newProject(QString, int, QDate);       // Creates a new Project
+    void openProject(QString file_path = 0);    // Open an existing project
 
     void saveProjectAs();  // Save current project as...
     void saveProject();    // Save current project
@@ -48,16 +50,16 @@ public slots:
     void modifyTaskList(QModelIndex,QModelIndex);
     void modifyTask(QModelIndex,QModelIndex);
 
-    void newTaskList(QString, int, QDate);
-    void newTask(QString, int, QDate);
+    void newTaskList(QString, int, QDate);  // Creates a new TaskList
+    void newTask(QString, int, QDate);      // Creates a new Task
 
-    void deleteTaskList();
-    void deleteTask();
+    void deleteTaskList();                  // Delete the selected TaskList
+    void deleteTask();                      // Delete the selected Task
 
-    void setSelectedItem(QModelIndex);
+    void setSelectedItem(QModelIndex);      // Selects an object on our model
 
     QList<QStandardItem *> *findQListFromItem(QStandardItem *);
-    void displayTaskList(QStandardItem *, bool);
+    void displayTaskList(QStandardItem *, bool);    // Displays a TaskList on our gui
 
     void fillSubList(QList<QString> *list, TaskComponent * t);  // Not working yet
 
@@ -65,8 +67,8 @@ private slots:
     void aboutPopup();          // Display the about popup
     void preferenciesPopup();   // Display the preferencies popup
     void changeLanguage(LangType lang); // Change the language of the application
-    void changeEvent(QEvent *);
-    void closeApplication();
+    void changeEvent(QEvent *); // Detects when the language change
+    void closeApplication();    // Close the application
 
 private:
     Ui::MainWindow *ui;
