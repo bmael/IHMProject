@@ -13,6 +13,16 @@ int Configuration::getLanguage(){
     return _language;
 }
 
+void Configuration::setTaskListPath(QString path)
+{
+    _taskListPath = path;
+}
+
+QString Configuration::getTaskListPath()
+{
+    return _taskListPath;
+}
+
 Configuration * Configuration::getInstance(){
     if(0 == _instance){
         _instance = new Configuration;

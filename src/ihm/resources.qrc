@@ -13,5 +13,6 @@
         <file alias="moustache">img/logo.png</file>
         <file alias="add">img/add.png</file>
         <file alias="remove">img/remove.png</file>
+        <file alias="printer">img/printer.png</file>
     </qresource>
 </RCC>

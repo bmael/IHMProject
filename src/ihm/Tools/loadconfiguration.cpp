@@ -15,7 +15,8 @@ void readConfig(const char * file_path){
         pugi::xml_node session = doc.child("session");
 
         //Last tasksList
-        // NOT YET IMPLEMENTED
+        pugi::xml_node tasklistpath = doc.child("tasklist");
+        Configuration::getInstance()->setTaskListPath(QString::fromStdString(tasklistpath.text().as_string()));
 
         // Preferences
         pugi::xml_node preferences = session.child("preferences");
@@ -31,8 +32,8 @@ void saveConfig(const char *file_path){
     session.set_name("session");
 
     // Task list
-    //NOT YET IMPLEMENTED
-
+    pugi::xml_node tasklist = session.append_child("tasklist");
+    tasklist.append_child(pugi::node_pcdata).set_value(Configuration::getInstance()->getTaskListPath().toStdString().c_str());
 
     // Preferences
     pugi::xml_node preferences = session.append_child("preferences");
