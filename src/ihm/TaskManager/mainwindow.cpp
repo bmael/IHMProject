@@ -707,7 +707,7 @@ void MainWindow::showAddTaskWidget()
     animation->setDuration(1000);
 
     animation->setStartValue(ui->addTaskListWidget->maximumWidth());
-    animation->setEndValue(350);
+    animation->setEndValue(250);
     ui->showHidepushButton->setIcon(QIcon(":/icons/hide"));
 
     animation->setEasingCurve(QEasingCurve::OutBack);
