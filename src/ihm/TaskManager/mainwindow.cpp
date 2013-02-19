@@ -99,6 +99,16 @@ void MainWindow::configureNewProject()
 
 void MainWindow::newProject(QString projectName, int priority, QDate date) {
 
+    delete currentProject_;
+    delete currentProjectItem_;
+    delete model_;
+    delete mapping_;
+
+    currentProject_ = new TaskList();
+    currentProjectItem_ = new QList<QStandardItem *>();
+    mapping_ = new QMap<QList<QStandardItem *> *, TaskComponent *>();
+    model_ = new QStandardItemModel(1, 2);
+
     currentProjectNotSaved_ = true;
     ui->tasksView->setModel(model_);
 
@@ -168,6 +178,7 @@ void MainWindow::openProject()
     delete mapping_;
 
     currentProject_ = parse(file.toStdString().c_str());
+    currentProjectPath_ = file;
     currentProject_->print();
     currentProjectItem_ = new QList<QStandardItem *>();
     mapping_ = new QMap<QList<QStandardItem *> *, TaskComponent *>();
@@ -195,7 +206,8 @@ void MainWindow::openProject()
 
     connect(model_, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modifyTaskList(QModelIndex,QModelIndex)));
 
-    // TODO display the result of parsing for file_path
+    ui->actionEnregistrer->setEnabled(true);
+    ui->actionEnregistrer_sous->setEnabled(true);
 }
 
 void MainWindow::saveProjectAs()
@@ -205,13 +217,17 @@ void MainWindow::saveProjectAs()
         save(this->currentProject_, s.toStdString());
         this->currentProjectPath_ = s;
         Configuration::getInstance()->setTaskListPath(this->currentProjectPath_);
+        currentProjectNotSaved_ = false;
     }
 }
 
 void MainWindow::saveProject()
 {
     if(this->currentProjectPath_.isNull()) saveProjectAs();
-    else save(this->currentProject_, this->currentProjectPath_.toStdString());
+    else{
+        save(this->currentProject_, this->currentProjectPath_.toStdString());
+        currentProjectNotSaved_ = false;
+    }
 }
 
 void MainWindow::print()
